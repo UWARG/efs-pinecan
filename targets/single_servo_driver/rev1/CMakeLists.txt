@@ -96,9 +96,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 if(TOOLCHAIN STREQUAL "gcc")
     set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/gcc-arm-none-eabi.cmake")
     message("Using GCC toolchain.")
-else()
+elseif(TOOLCHAIN STREQUAL "clang")
     set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/starm-clang.cmake")
     message("Using CLANG toolchain.")
+else()
+    message(FATAL_ERROR "toolchain must be set in the build configuration file.")
 endif()
 
 # Core project settings
