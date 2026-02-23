@@ -1,0 +1,13 @@
+../Core/Src/canard_stm32_driver.c:26:13:sendNodeStatus	1
+../Core/Src/canard_stm32_driver.c:46:13:handleFileReadResponse	8
+../Core/Src/canard_stm32_driver.c:114:6:eraseStagingFlash	1
+../Core/Src/canard_stm32_driver.c:136:13:handleBeginFirmwareUpdate	1
+../Core/Src/canard_stm32_driver.c:175:6:sendFirmwareRead	2
+../Core/Src/canard_stm32_driver.c:207:13:handleGetNodeInfo	1
+../Core/Src/canard_stm32_driver.c:241:13:handleArrayCommand	1
+../Core/Src/canard_stm32_driver.c:245:6:shouldAcceptTransfer	11
+../Core/Src/canard_stm32_driver.c:295:6:onTransferReceived	9
+../Core/Src/canard_stm32_driver.c:342:6:HAL_CAN_RxFifo0MsgPendingCallback	4
+../Core/Src/canard_stm32_driver.c:367:6:initCAN	1
+../Core/Src/canard_stm32_driver.c:404:6:sendCANTx	4
+../Core/Src/canard_stm32_driver.c:435:6:periodicCANTasks	2
