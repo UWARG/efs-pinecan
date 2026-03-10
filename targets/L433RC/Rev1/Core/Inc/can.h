@@ -27,6 +27,8 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "canard.h"
+#include <stdbool.h>
 
 /* USER CODE BEGIN Includes */
 /**
@@ -46,6 +48,23 @@ extern CAN_HandleTypeDef hcan1;
 void MX_CAN1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+
+// FW update struct
+typedef struct {
+    char path[256];
+    uint8_t node_id;
+    uint8_t transfer_id;
+    uint32_t last_read_ms;
+    uint32_t offset;            // Byte offset in firmware file
+	uint32_t flash_address;     // Current staging flash write address
+	bool in_progress;           // Is update running?
+} FirmwareUpdate;
+
+extern FirmwareUpdate fwupdate;
+
+void sendFirmwareRead(void);
+void handleFileReadResponse(CanardInstance* ins, CanardRxTransfer* transfer);
+void handleBeginFirmwareUpdate(CanardInstance* ins, CanardRxTransfer *transfer);
 
 /* USER CODE END Prototypes */
 

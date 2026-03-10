@@ -21,10 +21,11 @@
 #include "can.h"
 #include "usart.h"
 #include "gpio.h"
+#include "pinecan.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "canard_stm32_driver.h"
+
 #include <time.h>
 #include <stdio.h>
 #include "dronecan_msgs.h"
@@ -121,8 +122,8 @@ int main(void)
 		}
 		HAL_Delay(10);
 //		printf("In Loop\n\r");
-		sendCANTx();
-		periodicCANTasks();
+		// encorporated in pinecan1ms()??  sendCANTx()
+		pinecan1ms(); //periodicCANTasks()
 	}
 
   /* USER CODE END 2 */
@@ -142,8 +143,10 @@ int main(void)
 		sendFirmwareRead();
 	}
 
-	sendCANTx();
-	periodicCANTasks();
+	// sendCANTx();
+	// periodicCANTasks();
+
+  pinecan1ms();
 
 
   }
