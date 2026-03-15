@@ -38,6 +38,9 @@ string(JSON _cfg GET "${_configs_json}" "${PINECAN_CONFIG_KEY}")
 # Extract board
 string(JSON PINECAN_BOARD GET "${_cfg}" board)
 
+# Extract toolchain type
+string(JSON TOOLCHAIN GET "${_cfg}" toolchain)
+
 # Get all keys under "symbols"
 # Extract the 'symbols' object only
 string(JSON _symbols_obj GET "${_cfg}" symbols)
@@ -87,9 +90,18 @@ endif()
 # Set the project name
 set(CMAKE_PROJECT_NAME servo)
 
-
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
+
+if(TOOLCHAIN STREQUAL "gcc")
+    set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/gcc-arm-none-eabi.cmake")
+    message("Using GCC toolchain.")
+elseif(TOOLCHAIN STREQUAL "clang")
+    set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/starm-clang.cmake")
+    message("Using CLANG toolchain.")
+else()
+    message(FATAL_ERROR "toolchain must be set in the build configuration file.")
+endif()
 
 # Core project settings
 project(${CMAKE_PROJECT_NAME})
