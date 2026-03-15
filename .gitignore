@@ -1,4 +1,5 @@
 .venv
 .vscode
 .metadata
+generated/
 build/
