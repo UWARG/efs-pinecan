@@ -9,6 +9,13 @@ typedef struct {
     uint8_t hardwareID[16];
 } PinecanBoardData;
 
+//check if this is the best way to define, also check warg best practices
+
+static volatile uint8_t head = 0;
+static volatile uint8_t tail = 0;
+static volatile uint8_t count = 0;
+static CanardCANFrame rxQueue[RX_QUEUE_SIZE];
+
 static PinecanBoardData boardData;
 
 /* ============ PRIVATE FUNCTION DECLARATIONS ============ */
@@ -79,7 +86,11 @@ bool processTxMessage(const CanardCANFrame *txFrame) {
 // TODO: compare to const int16_t rx_res = canardSTM32Recieve(hcan, CAN_RX_FIFO0, &rx_frame); again
 // Can think abt support for multiple rx fifos (this would come with some smart stuff with setting up the filters correctly for that as well)
 // Also even though we can use our own rx fifo queue here, we can also just use the fact that stm32 already has an rx fifo of length 3 (and its in hardware hooray)
+
+//create another queue (holds more than 3 frames) which takes frames from RXFIFO0, holds frames until they can be processed
+//figure out how to make queue global
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
+//end goal: create frame, put in buffer and return
 {
     CAN_RxHeaderTypeDef rxHeader = {0};
     uint8_t rxData[8] = {0};
@@ -105,7 +116,9 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
         // assume a single interface
         rxFrame.iface_id = 0;
 
-        handleRxFrame(&rxFrame); // TODO: this rx frame is deleted after this function
+        
+        //Delete handleRxFrame, rxFrame is the frame from fifo0
+        enqueueRxQueue(&rxFrame);
     }
 }
 
@@ -142,4 +155,48 @@ void pinecanInit(PinecanInit *initParams) {
         .nodeStatus = initParams->nodeStatus
     };
     init(&commonInitParams);
+}
+
+//insert function (put this in .h) that takes pointer to canardCANframe (thing in my queue), if queue empty return false
+//if queue has data make input can frame = top frame in queue (pop input can frame and put into my own queue)
+//keep track of how full queue is where you are in queue
+//maybe use a circular buffer
+
+bool enqueueRxQueue(const CanardCANFrame *frame)
+{
+    if (count >= RX_QUEUE_SIZE)
+        return false; // queue full
+
+    rxQueue[head] = *frame;     // copy entire frame
+    head = (head + 1) % RX_QUEUE_SIZE;
+    count++;
+
+    return true;
+}
+
+bool dequeueRxQueue(CanardCANFrame *frame)
+{
+    if (count == 0)
+        return false; // queue empty
+
+    *frame = rxQueue[tail];
+    tail = (tail + 1) % RX_QUEUE_SIZE;
+    count--;
+
+    return true;
+}
+
+CanardCANFrame* peekRxQueue()
+{
+    if (count == 0)
+        return NULL; // queue empty
+    return &rxQueue[tail];
+}
+
+void processCanardRxQueue()
+{
+    CanardCANFrame *nextRxframe = peekRxQueue();
+    if (nextRxframe != NULL)
+        handleRxFrame(nextRxframe);
+    return;
 }

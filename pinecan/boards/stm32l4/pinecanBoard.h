@@ -2,6 +2,7 @@
 
 #include "stm32l4xx_hal.h"
 #include "canard.h"
+#define RX_QUEUE_SIZE 32
 
 typedef struct {
     CAN_HandleTypeDef *hcan;
@@ -17,3 +18,8 @@ typedef struct {
  * @retval None
  */
 void pinecanInit(PinecanInit *initParams);
+bool enqueueRxQueue(const CanardCANFrame *frame);
+bool dequeueRxQueue(CanardCANFrame *frame);
+void processCanardRxQueue();
+void handleRxFrame(CanardCANFrame *rxFrame);
+CanardCANFrame* peekRxQueue();

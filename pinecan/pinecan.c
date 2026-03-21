@@ -312,13 +312,16 @@ void init(CommonInitParams *initParams) {
 void handleRxFrame(CanardCANFrame *rxFrame) {
     // TODO: this rx frame is deleted after this function returns. If/when adding a queue, make sure to handle this correctly
     canardHandleRxFrame(data.canard, rxFrame, getUptimeMs() * 1000U);
+    //make vrb of canardcanframe in pinecanboard.c make it equal to the frame im going to pop(make a peek), then pass into handlerxframe
+    
+    dequeueRxQueue(rxFrame); //how else can i delete it...
 }
 
 /* ============ EXTERNAL PUBLIC FUNCTION DEFINITIONS ============ */
 
 void pinecan1ms(void){
     processCanardTxQueue();
-
+    processCanardRxQueue();
     if(getUptimeMs() >= data.nextRunTime1Hz)
     {
         data.nextRunTime1Hz = getUptimeMs() + 1000U;
