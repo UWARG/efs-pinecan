@@ -115,9 +115,8 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 
         // assume a single interface
         rxFrame.iface_id = 0;
-
         
-        //Delete handleRxFrame, rxFrame is the frame from fifo0
+        // add frame from hardware queue to software queue
         enqueueRxQueue(&rxFrame);
     }
 }
@@ -157,10 +156,7 @@ void pinecanInit(PinecanInit *initParams) {
     init(&commonInitParams);
 }
 
-//insert function (put this in .h) that takes pointer to canardCANframe (thing in my queue), if queue empty return false
-//if queue has data make input can frame = top frame in queue (pop input can frame and put into my own queue)
-//keep track of how full queue is where you are in queue
-//maybe use a circular buffer
+// queue functions for circular buffer, included in .h
 
 bool enqueueRxQueue(const CanardCANFrame *frame)
 {
