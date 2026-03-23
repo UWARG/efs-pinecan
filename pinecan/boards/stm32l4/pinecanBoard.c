@@ -9,8 +9,6 @@ typedef struct {
     uint8_t hardwareID[16];
 } PinecanBoardData;
 
-//check if this is the best way to define, also check warg best practices
-
 static volatile uint8_t head = 0;
 static volatile uint8_t tail = 0;
 static volatile uint8_t count = 0;
