@@ -10,6 +10,7 @@
             "SOFTWARE_MINOR_VERSION": 0,
             "HARDWARE_MAJOR_VERSION": 2,
             "HARDWARE_MINOR_VERSION": 0
-        }
+        },
+        "toolchain": "gcc"
     }
 }

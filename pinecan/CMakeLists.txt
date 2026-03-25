@@ -14,6 +14,7 @@ target_include_directories(pinecan INTERFACE
 
 target_sources(pinecan INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}/pinecan.c
+    ${CMAKE_CURRENT_LIST_DIR}/dynamic_node_allocatee.c
     ${CMAKE_CURRENT_LIST_DIR}/boards/${PINECAN_BOARD}/pinecanBoard.c
 )
 

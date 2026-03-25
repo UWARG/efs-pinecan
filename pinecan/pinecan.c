@@ -1,3 +1,4 @@
+#include "dynamic_node_allocatee.h"
 #include "pinecan.h"
 #include "pinecan_internals.h"
 #include "pinecanBoard.h"
@@ -292,10 +293,12 @@ static void processCanardTxQueue(void) {
 
 /* ============ INTERNAL PUBLIC FUNCTION DEFINITIONS ============ */
 
+
 void init(CommonInitParams *initParams) {
     data.canard = initParams->canard;
     data.nodeStatus = initParams->nodeStatus;
     data.nextRunTime1Hz = 0U;
+
 
     // configure Canard
     canardInit(initParams->canard,
@@ -305,25 +308,35 @@ void init(CommonInitParams *initParams) {
         shouldAcceptTransfer,
         NULL
     );
-
-    canardSetLocalNodeID(initParams->canard, NODE_ID);
+    dnIdAllocateeInit(initParams->canard);
+   
 }
+
 
 void handleRxFrame(CanardCANFrame *rxFrame) {
     // TODO: this rx frame is deleted after this function returns. If/when adding a queue, make sure to handle this correctly
     canardHandleRxFrame(data.canard, rxFrame, getUptimeMs() * 1000U);
 }
 
+
 /* ============ EXTERNAL PUBLIC FUNCTION DEFINITIONS ============ */
 
+
 void pinecan1ms(void){
+    if(canardGetLocalNodeID(data.canard) == 0){
+        dnIdAllocatee1ms();
+    }else{
+    	if(getUptimeMs() >= data.nextRunTime1Hz)
+    	    {
+    	        data.nextRunTime1Hz = getUptimeMs() + 1000U;
+    	        canardCleanupStaleTransfers(data.canard, getUptimeMs() * 1000U);
+    	        sendNodeStatus();
+    	    }
+    }
     processCanardTxQueue();
 
-    if(getUptimeMs() >= data.nextRunTime1Hz)
-    {
-        data.nextRunTime1Hz = getUptimeMs() + 1000U;
 
-        canardCleanupStaleTransfers(data.canard, getUptimeMs() * 1000U);
-        sendNodeStatus();
-    }
 }
+
+
+
