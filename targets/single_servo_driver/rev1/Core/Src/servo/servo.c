@@ -1,4 +1,5 @@
 #include "servo.h"
+#include "can.h"
 
 #define SERVO_COUNT 1
 
@@ -62,5 +63,13 @@ void percentageActuation(float percentage, uint8_t actuatorID)
     uint32_t ccrValue = servos[i].minCCR + percentage * (servos[i].maxCCR - servos[i].minCCR);
     __HAL_TIM_SET_COMPARE(servos[i].timer, servos[i].channel, ccrValue);
     return;
+  }
+}
+
+void sendActuatorStatuses(void)
+{
+  for(int i = 0; i < SERVO_COUNT; ++i)
+  {
+    sendActuatorStatus(servos[i]);
   }
 }

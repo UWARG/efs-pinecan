@@ -24,7 +24,7 @@ static void setUniqueHardwareID(uint8_t id[16]){
     HALUniqueIDs[0] = HAL_GetUIDw0();
     HALUniqueIDs[1] = HAL_GetUIDw1();
     HALUniqueIDs[2] = HAL_GetUIDw2();
-    HALUniqueIDs[3] = HAL_GetUIDw1(); // repeating UIDw1 for remaining bytes
+    HALUniqueIDs[3] = HAL_GetUIDw0(); // repeating UIDw0 for remaining bytes
     memcpy(id, HALUniqueIDs, 16);
 }
 
@@ -109,7 +109,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
     }
 }
 
-void pinecanInit(PinecanInit *initParams) {
+PineCAN_Status pinecanInit(PinecanInit *initParams) {
     boardData.hcan = initParams->hcan;
 
     // configure HAL CAN
@@ -124,12 +124,18 @@ void pinecanInit(PinecanInit *initParams) {
     canfil.FilterScale = CAN_FILTERSCALE_32BIT;
     canfil.FilterActivation = ENABLE;
     canfil.SlaveStartFilterBank = 0;
-    HAL_CAN_ConfigFilter(initParams->hcan, &canfil);
+    if (HAL_CAN_ConfigFilter(initParams->hcan, &canfil) != HAL_OK) {
+        return PINECAN_ERROR;
+    }
 
-    HAL_CAN_ActivateNotification(initParams->hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
+    if (HAL_CAN_ActivateNotification(initParams->hcan, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK) {
+        return PINECAN_ERROR;
+    }
 
     // start HAL driver
-    HAL_CAN_Start(initParams->hcan);
+    if (HAL_CAN_Start(initParams->hcan) != HAL_OK) {
+        return PINECAN_ERROR;
+    }
 
     // set hardware id
     setUniqueHardwareID(boardData.hardwareID);
@@ -137,9 +143,9 @@ void pinecanInit(PinecanInit *initParams) {
     // initialize non board specific
     CommonInitParams commonInitParams = {
         .canard = initParams->canard,
-        .canardMemPool = initParams->canardMemPool,
-        .canardMemPoolSize = initParams->canardMemPoolSize,
         .nodeStatus = initParams->nodeStatus
     };
     init(&commonInitParams);
+
+    return PINECAN_OK;
 }

@@ -5,6 +5,7 @@
 #include "dronecan_msgs.h"
 #include "pinecan_handlers.h"
 #include <string.h>
+#include <assert.h>
 
 #define RX_HANDLER_LIST_PRIVATE RX_HANDLER_LIST \
         REGISTER_RX_HANDLER(UAVCAN_PROTOCOL_GETNODEINFO,           handleGetNodeInfo,           REQUEST) \
@@ -14,24 +15,25 @@
 typedef struct {
     CanardInstance *canard;
     struct uavcan_protocol_NodeStatus *nodeStatus;
-    uint32_t nextRunTime1Hz;
 } PinecanData;
 
 static PinecanData data;
+
+static uint8_t canardMemPool[CANARD_MEM_POOL_SIZE];
 
 /* ============ PRIVATE FUNCTION DECLARATIONS ============ */
 
 static bool shouldAcceptTransfer(const CanardInstance* ins, uint64_t* crcSignature, uint16_t dataTypeID, CanardTransferType transferType, uint8_t sourceNodeID);
 static void onTransferReceived(CanardInstance* ins, CanardRxTransfer* transfer);
 static void handleGetNodeInfo(CanardInstance* ins, CanardRxTransfer *transfer);
-static void sendNodeStatus(void);
+static PineCAN_Status sendNodeStatus(void);
 static void processCanardTxQueue(void);
 
 /* ============ PRIVATE FUNCTION DEFINITIONS ============ */
 
 static bool shouldAcceptTransfer(const CanardInstance* ins, uint64_t* crcSignature, uint16_t dataTypeID, CanardTransferType transferType, uint8_t sourceNodeID) {
-    UNUSED(ins);
-    UNUSED(sourceNodeID);
+    PINECAN_UNUSED(ins);
+    PINECAN_UNUSED(sourceNodeID);
 
     // --------- RESPONSE ----------
     if (transferType == CanardTransferTypeResponse)
@@ -214,7 +216,7 @@ static void onTransferReceived(CanardInstance* ins, CanardRxTransfer* transfer)
 // uavcan.protocol.getnodeinfo
 static void handleGetNodeInfo(CanardInstance* ins, CanardRxTransfer *transfer) // TODO: really no reason that nodeInfoRes can't be static and not regenerated everytime
 {
-    UNUSED(ins);
+    PINECAN_UNUSED(ins);
 
     data.nodeStatus->uptime_sec = getUptimeMs() / 1000U;
 
@@ -229,7 +231,10 @@ static void handleGetNodeInfo(CanardInstance* ins, CanardRxTransfer *transfer) /
     nodeInfoRes.hardware_version.certificate_of_authenticity.len  = 0;
     nodeInfoRes.name.len                                          = sizeof(NODE_NAME);
     memcpy(nodeInfoRes.hardware_version.unique_id, getUniqueHardwareID(), 16);
-    strcpy((char*)nodeInfoRes.name.data, NODE_NAME);
+
+    static_assert(sizeof(NODE_NAME) <= 80, "NODE_NAME is too long to fit in GetNodeInfoResponse");
+    strncpy((char*)nodeInfoRes.name.data, NODE_NAME, 79); // copy at most 79 characters to ensure null termination
+    ((char*)nodeInfoRes.name.data)[79] = '\0';
 
     uint8_t txBuffer[UAVCAN_PROTOCOL_GETNODEINFO_RESPONSE_MAX_SIZE] = {0};
     const uint32_t dataLength = uavcan_protocol_GetNodeInfoResponse_encode(&nodeInfoRes, txBuffer);
@@ -244,11 +249,13 @@ static void handleGetNodeInfo(CanardInstance* ins, CanardRxTransfer *transfer) /
         txBuffer,
         dataLength
     };
-    canardRequestOrRespondObj(data.canard, transfer->source_node_id, &txFrame);
+    
+    int16_t retVal = canardRequestOrRespondObj(data.canard, transfer->source_node_id, &txFrame);
+    PINECAN_DEBUG_ASSERT(CANARD_OK == retVal);
 }
 
 // uavcan.protocol.nodestatus
-static void sendNodeStatus(void)
+static PineCAN_Status sendNodeStatus(void)
 {
     data.nodeStatus->uptime_sec = getUptimeMs() / 1000U;
 
@@ -265,7 +272,9 @@ static void sendNodeStatus(void)
         txBuffer,
         dataLength
     };
-    canardBroadcastObj(data.canard, &txFrame);
+    int16_t retVal = canardBroadcastObj(data.canard, &txFrame);
+    PINECAN_DEBUG_ASSERT(CANARD_OK == retVal);
+    return (retVal == CANARD_OK) ? PINECAN_OK : PINECAN_ERROR;
 }
 
 static void processCanardTxQueue(void) {
@@ -295,35 +304,49 @@ static void processCanardTxQueue(void) {
 void init(CommonInitParams *initParams) {
     data.canard = initParams->canard;
     data.nodeStatus = initParams->nodeStatus;
-    data.nextRunTime1Hz = 0U;
 
     // configure Canard
-    canardInit(initParams->canard,
-        initParams->canardMemPool,
-        initParams->canardMemPoolSize,
+    canardInit(data.canard,
+        canardMemPool,
+        sizeof(canardMemPool),
         onTransferReceived,
         shouldAcceptTransfer,
         NULL
     );
 
-    canardSetLocalNodeID(initParams->canard, NODE_ID);
+    canardSetLocalNodeID(data.canard, NODE_ID);
 }
 
 void handleRxFrame(CanardCANFrame *rxFrame) {
     // TODO: this rx frame is deleted after this function returns. If/when adding a queue, make sure to handle this correctly
-    canardHandleRxFrame(data.canard, rxFrame, getUptimeMs() * 1000U);
+    int16_t retVal = canardHandleRxFrame(data.canard, rxFrame, getUptimeMs() * 1000U);
+    PINECAN_DEBUG_ASSERT(CANARD_OK == retVal);
 }
 
 /* ============ EXTERNAL PUBLIC FUNCTION DEFINITIONS ============ */
 
-void pinecan1ms(void){
+PineCAN_Status pinecan1ms(void){
+    static uint32_t nextRunTime1Hz = 0U;
+    static uint32_t nextRunTimeNodeStatus = 0U;
+    uint32_t uptimeMs = getUptimeMs();
+
+    PineCAN_Status retVal = PINECAN_OK;
+
     processCanardTxQueue();
 
-    if(getUptimeMs() >= data.nextRunTime1Hz)
+    if(uptimeMs >= nextRunTime1Hz)
     {
-        data.nextRunTime1Hz = getUptimeMs() + 1000U;
+        nextRunTime1Hz = uptimeMs + 1000U;
 
         canardCleanupStaleTransfers(data.canard, getUptimeMs() * 1000U);
-        sendNodeStatus();
     }
+
+    if (uptimeMs >= nextRunTimeNodeStatus)
+    {
+        nextRunTimeNodeStatus = uptimeMs + UAVCAN_PROTOCOL_NODESTATUS_MAX_BROADCASTING_PERIOD_MS/2;
+
+        retVal |= sendNodeStatus();
+    }
+
+    return retVal;
 }

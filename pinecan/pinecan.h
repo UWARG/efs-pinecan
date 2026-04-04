@@ -1,15 +1,15 @@
 #pragma once
 
 #include "canard.h"
-#include "pinecanBoard.h"
 #include <stdint.h>
 
-#ifndef UNUSED
-#define UNUSED(x) (void)(x)
-#endif
+typedef enum PineCAN_Status_e {
+    PINECAN_OK = 0,
+    PINECAN_ERROR = 1
+} PineCAN_Status;
 
 /**
  * @brief  Process PineCAN tasks every 1 ms
  * @retval None
  */
-void pinecan1ms(void);
+PineCAN_Status pinecan1ms(void);

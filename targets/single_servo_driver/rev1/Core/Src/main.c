@@ -109,11 +109,17 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   static uint32_t currentTick = 0;
+  static uint32_t lastStatusTxTick = 0;
   while (1)
   {
     if (HAL_GetTick() != currentTick) {
       currentTick = HAL_GetTick();
       pinecan1ms();
+    }
+
+    if (currentTick - lastStatusTxTick >= 1000) {
+      lastStatusTxTick = currentTick;
+      sendActuatorStatuses();
     }
 
     /* USER CODE END WHILE */

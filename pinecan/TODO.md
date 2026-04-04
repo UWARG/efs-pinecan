@@ -37,3 +37,15 @@ all pinecan board specific interfaces that are to be used by pinecan common but 
 
 
 What i'm currently thinking is the board .h is only included by pinecan.c and not pinecan.h. The user only has access to pinecan.h functions in common, and pincan.h routes to relevant board specific when necessary
+
+TAO support
+Better/correct handling of transfer id
+
+Rename pinecan.h to pinecanCommon.h and have pinecan.h include everything, thus preventing circular includes while still having pinecan.h be the only thing that needs to be included by the target
+
+guidance on how to set canardmempool size
+setup for enabling/disabling debug macro on debug, and guidance on how to use debug vs release builds
+
+long term:
+- rtos support (probably only when needed)
+- cpp support (similar to how libcanard did it likely with some extern Cs in there and stuff)

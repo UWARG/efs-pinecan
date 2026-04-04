@@ -21,15 +21,11 @@ target_sources(pinecan INTERFACE
 add_library(libcanard STATIC)
 
 target_sources(libcanard PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}/libcanard/Src/canard.c
+    ${CMAKE_CURRENT_LIST_DIR}/libcanard/canard.c
 )
 
 target_include_directories(libcanard PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}/libcanard/Inc
-)
-
-target_include_directories(libcanard PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}/libcanard/Src
+    ${CMAKE_CURRENT_LIST_DIR}/libcanard
 )
 
 # Add dsdl generated sources
