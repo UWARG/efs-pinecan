@@ -6,16 +6,16 @@ PATHS := dronecan-dsdl/uavcan \
 		 custom/warg
 
 # System Python used to *create* the venv (can be overridden: make SYS_PYTHON=python3)
-SYS_PYTHON ?= python3
+SYS_PYTHON ?= python
 
-VENV_PYTHON := .venv/bin/python
-VENV_PIP    := .venv/bin/pip
+VENV_PYTHON := .venv/Scripts/python
+VENV_PIP    := .venv/Scripts/pip
 
 ROOT := $(CURDIR)
 VENV_DIR := .venv
 DEPS_STAMP := $(VENV_DIR)/.deps
 SCRIPT := $(ROOT)/dronecan-dsdlc/dronecan_dsdlc.py -O generated $(PATHS)
-REQUIREMENTS := dronecan
+REQUIREMENTS := dronecan empy pexpect
 
 all: setup build
 

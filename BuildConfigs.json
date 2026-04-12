@@ -12,5 +12,19 @@
             "HARDWARE_MINOR_VERSION": 0
         },
         "toolchain": "gcc"
+    },
+    "Bootloader_rev1": {
+        "target_location": "bootloader/L433RC/Rev1",
+        "board": "stm32l4",
+        "symbols": {
+            "NODE_NAME": "Bootloader1",
+            "NODE_ID": 71,
+            "COMMIT_HASH": 0,
+            "SOFTWARE_MAJOR_VERSION": 1,
+            "SOFTWARE_MINOR_VERSION": 0,
+            "HARDWARE_MAJOR_VERSION": 2,
+            "HARDWARE_MINOR_VERSION": 0
+        },
+        "toolchain": "gcc"
     }
 }

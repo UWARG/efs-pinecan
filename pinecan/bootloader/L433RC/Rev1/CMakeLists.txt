@@ -14,7 +14,10 @@ set(PINECAN_CONFIG_KEY "Bootloader_rev1"
     CACHE STRING "Key in BuildConfigs.json to use")
 
 # Repo root path. Adjust path to match your layout.
-get_filename_component(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../.." ABSOLUTE)
+get_filename_component(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../.." ABSOLUTE)
+
+# Overall bootloader folder. Adjust path to match layout
+set(BOOTLDR_DIR ${CMAKE_SOURCE_DIR}/../..)
 
 # Load BuildConfig.json to get config parameters
 set(PINECAN_CONFIG_FILE "${ROOT_DIR}/BuildConfigs.json")
@@ -128,19 +131,28 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     ./Core/Src/main.c
+    ${ROOT_DIR}/pinecan/bootloader/board_specific/${PINECAN_BOARD}/bootloader_l4.c
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
     ./Core/Inc
+    ${ROOT_DIR}/pinecan/bootloader/board_specific/${PINECAN_BOARD}
 )
+
+# Inlucdes the file with memeory locations for the specific board
+include(${ROOT_DIR}/pinecan/bootloader/board_specific/${PINECAN_BOARD}/memory.cmake)
 
 # Add project symbols (macros)
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     # Pinecan symbols from BuildConfig.json
     ${PINECAN_SYMBOL_DEFS}
     # Add user defined symbols
+    FLASH_BASE_ADDR=${FLASH_BASE_ADDR}
+    BOOTLOADER_SIZE=${BOOTLOADER_SIZE}
+    APP_START_ADDR=${APP_START_ADDR}
+    FLASH_PAGE_SIZE=${FLASH_PAGE_SIZE}
 )
 
 # Add linked libraries
@@ -149,4 +161,15 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     # Pinecan libraries
     pinecan # Brings in libcanard + dsdl as well
     # Add user defined libraries
+)
+
+configure_file(# Need to change since the linker is in the board specific not board agnostic section so this path is wrong.
+    ${BOOTLDR_DIR}/board_specific/${PINECAN_BOARD}/STM32L433XX_FLASH.ld.in
+    ${CMAKE_CURRENT_BINARY_DIR}/STM32L433XX_FLASH.ld
+    @ONLY
+)
+
+# 
+target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
+    -T${CMAKE_CURRENT_BINARY_DIR}/STM32L433XX_FLASH.ld
 )

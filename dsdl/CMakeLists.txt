@@ -1,5 +1,14 @@
 cmake_minimum_required(VERSION 3.22)
 
+add_custom_target(
+    build_external
+    COMMAND make # The command to run (e.g., 'make all' or 'mingw32-make' on Windows)
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} # The directory containing the Makefile
+    COMMENT "Building the external library via Makefile" # Optional message
+    # Add the ALL option if you want this target to run by default with your main build
+    # ALL 
+)
+
 # dsdl as a static lib
 add_library(dsdl STATIC)
 

@@ -205,7 +205,7 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 
 static void goto_application(void){
-	void (*app_reset_handler)(void) = (void (*)(void))(*(volatile uint32_t*)(0x08020000 + 4));
+	void (*app_reset_handler)(void) = (void (*)(void))(*(volatile uint32_t*) (APP_START_ADDR + 4)); //(0x08020000 + 4));
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
 	HAL_Delay(1000);
 
@@ -214,12 +214,12 @@ static void goto_application(void){
 	HAL_DeInit();
 	__disable_irq();
 
-	__set_MSP(*(volatile uint32_t*) 0x08020000);
+	__set_MSP(*(volatile uint32_t*) APP_START_ADDR);//0x08020000);
 	SysTick->CTRL = 0;
 	SysTick->LOAD = 0;
 	SysTick->VAL = 0;
 
-	SCB->VTOR = 0x08020000;
+	SCB->VTOR = APP_START_ADDR; //0x08020000;
 
 	// Disable all NVIC interrupts
 	for (int i = 0; i < 8; i++) {
