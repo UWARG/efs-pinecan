@@ -9,11 +9,12 @@ endif()
 
 target_include_directories(pinecan INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/common
     ${CMAKE_CURRENT_LIST_DIR}/boards/${PINECAN_BOARD}
 )
 
 target_sources(pinecan INTERFACE
-    ${CMAKE_CURRENT_LIST_DIR}/pinecan.c
+    ${CMAKE_CURRENT_LIST_DIR}/common/pinecanCommon.c
     ${CMAKE_CURRENT_LIST_DIR}/boards/${PINECAN_BOARD}/pinecanBoard.c
 )
 

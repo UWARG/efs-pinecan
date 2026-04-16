@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "pinecanBoard.h"
-#include "pinecan_internals.h"
+#include "pinecanCommon_internals.h"
 
 /* ============ PRIVATE DATA ============ */
 typedef struct {

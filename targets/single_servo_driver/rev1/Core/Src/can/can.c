@@ -4,7 +4,7 @@
 #include "dronecan_msgs.h"
 #include "servo.h"
 #include "stm32l4xx_hal.h"
-#include "pinecanBoard.h"
+#include "pinecan.h"
 
 extern CAN_HandleTypeDef hcan1;
 

@@ -1,11 +1,11 @@
-#include "pinecan.h"
-#include "pinecan_internals.h"
+#include "pinecanCommon.h"
+#include "pinecanCommon_internals.h"
 #include "pinecanBoard.h"
 #include "pinecanBoard_internals.h"
+#include "pinecan.h"
 #include "dronecan_msgs.h"
 #include "pinecan_handlers.h"
 #include <string.h>
-#include <assert.h>
 
 #define RX_HANDLER_LIST_PRIVATE RX_HANDLER_LIST \
         REGISTER_RX_HANDLER(UAVCAN_PROTOCOL_GETNODEINFO,           handleGetNodeInfo,           REQUEST) \
@@ -251,7 +251,7 @@ static void handleGetNodeInfo(CanardInstance* ins, CanardRxTransfer *transfer) /
     };
     
     int16_t retVal = canardRequestOrRespondObj(data.canard, transfer->source_node_id, &txFrame);
-    PINECAN_DEBUG_ASSERT(CANARD_OK == retVal);
+    PINECAN_ASSERT(CANARD_OK == retVal);
 }
 
 // uavcan.protocol.nodestatus
@@ -273,7 +273,7 @@ static PineCAN_Status sendNodeStatus(void)
         dataLength
     };
     int16_t retVal = canardBroadcastObj(data.canard, &txFrame);
-    PINECAN_DEBUG_ASSERT(CANARD_OK == retVal);
+    PINECAN_ASSERT(CANARD_OK == retVal);
     return (retVal == CANARD_OK) ? PINECAN_OK : PINECAN_ERROR;
 }
 
@@ -320,7 +320,7 @@ void init(CommonInitParams *initParams) {
 void handleRxFrame(CanardCANFrame *rxFrame) {
     // TODO: this rx frame is deleted after this function returns. If/when adding a queue, make sure to handle this correctly
     int16_t retVal = canardHandleRxFrame(data.canard, rxFrame, getUptimeMs() * 1000U);
-    PINECAN_DEBUG_ASSERT(CANARD_OK == retVal);
+    PINECAN_ASSERT(CANARD_OK == retVal);
 }
 
 /* ============ EXTERNAL PUBLIC FUNCTION DEFINITIONS ============ */
