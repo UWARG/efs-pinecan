@@ -1,1 +1,0 @@
-this is where all targets live. nice thing about storing them all together is that when we have another revision and need to make some adaptations, we can make any common code common between two revisions by just moving it to the folder shared by them
