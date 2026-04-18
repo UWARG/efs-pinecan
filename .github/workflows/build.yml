@@ -39,17 +39,24 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install ARM toolchain
+      - name: Install ARM toolchain and Ninja
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi ninja-build
+          sudo apt-get install -y ninja-build
+          # Download ARM GNU toolchain
+          wget -q https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
+          tar xf arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
+          echo "${{ github.workspace }}/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin" >> "$GITHUB_PATH"
+
+      - name: Verify toolchain
+        run: arm-none-eabi-gcc --version
 
       - name: Configure CMake
         run: |
           cmake -B build/${{ matrix.config_key }} \
-            -S ${{ matrix.target }} \
+            -S ${{ github.workspace }}/${{ matrix.target }} \
             -G Ninja \
-            -DCMAKE_TOOLCHAIN_FILE=${{ matrix.target }}/cmake/gcc-arm-none-eabi.cmake \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/${{ matrix.target }}/cmake/gcc-arm-none-eabi.cmake \
             -DPINECAN_CONFIG_KEY=${{ matrix.config_key }} \
             -DCMAKE_BUILD_TYPE=Release
 
