@@ -31,8 +31,9 @@ jobs:
       fail-fast: false
       matrix:
         include: ${{ fromJson(needs.enumerate.outputs.matrix) }}
+        build_type: [Debug, Release]
 
-    name: "Build ${{ matrix.config_key }}"
+    name: "Build ${{ matrix.config_key }} (${{ matrix.build_type }})"
 
     steps:
       - uses: actions/checkout@v4
@@ -58,7 +59,7 @@ jobs:
             -G Ninja \
             -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/${{ matrix.target }}/cmake/gcc-arm-none-eabi.cmake \
             -DPINECAN_CONFIG_KEY=${{ matrix.config_key }} \
-            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
       - name: Build
         run: cmake --build build/${{ matrix.config_key }}
@@ -66,8 +67,8 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.config_key }}
+          name: ${{ matrix.config_key }}-${{ matrix.build_type }}
           path: |
-            build/${{ matrix.config_key }}/**/*.elf
-            build/${{ matrix.config_key }}/**/*.bin
-            build/${{ matrix.config_key }}/**/*.hex
+            build/${{ matrix.config_key }}/${{ matrix.build_type }}/**/*.elf
+            build/${{ matrix.config_key }}/${{ matrix.build_type }}/**/*.bin
+            build/${{ matrix.config_key }}/${{ matrix.build_type }}/**/*.hex
