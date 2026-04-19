@@ -35,6 +35,12 @@ add_subdirectory(../dsdl ${CMAKE_BINARY_DIR}/dsdl) # TODO: set up clever regener
 # Consumers of pinecan automatically get libcanard linked in
 target_link_libraries(pinecan INTERFACE libcanard dsdl)
 
+# Set PINECAN_DEBUG for debug builds
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(pinecan INTERFACE PINECAN_DEBUG=1)
+    message("PINECAN_DEBUG enabled for Debug build")
+endif()
+
 # Validate that pinecan code is compatible with C standard
 if(CMAKE_C_STANDARD LESS 11)
     message(ERROR "Generated code requires C11 or higher")
