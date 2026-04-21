@@ -7,9 +7,6 @@
 #include "pinecan_handlers.h"
 #include <string.h>
 
-#define RX_HANDLER_LIST_PRIVATE RX_HANDLER_LIST \
-        REGISTER_RX_HANDLER(UAVCAN_PROTOCOL_GETNODEINFO,           handleGetNodeInfo,           REQUEST) \
-
 /* ============ PRIVATE DATA ============ */
 
 typedef struct {
@@ -28,6 +25,20 @@ static void onTransferReceived(CanardInstance* ins, CanardRxTransfer* transfer);
 static void handleGetNodeInfo(CanardInstance* ins, CanardRxTransfer *transfer);
 static PineCAN_Status sendNodeStatus(void);
 static void processCanardTxQueue(void);
+
+// Add any PineCAN specific rx handlers
+#define RX_HANDLER_LIST_PRIVATE RX_HANDLER_LIST \
+        REGISTER_RX_HANDLER(UAVCAN_PROTOCOL_GETNODEINFO,           handleGetNodeInfo,           REQUEST) \
+
+// Compile-time signature check for all handlers
+typedef void (*PinecanRxHandler)(CanardInstance*, CanardRxTransfer*);
+
+__attribute__((unused)) static inline void _pinecan_check_handlers(void) {
+    #define REGISTER_RX_HANDLER(TYPE, HANDLER, KIND) \
+        { PinecanRxHandler _h = (HANDLER); (void)_h; }
+    RX_HANDLER_LIST_PRIVATE
+    #undef REGISTER_RX_HANDLER
+}
 
 /* ============ PRIVATE FUNCTION DEFINITIONS ============ */
 
