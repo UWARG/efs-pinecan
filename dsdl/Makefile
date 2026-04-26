@@ -14,9 +14,14 @@ SYS_PYTHON ?= $(shell \
 
 VENV_DIR := .venv
 DEPS_STAMP := $(VENV_DIR)/.deps
+
 SCRIPT := dronecan-dsdlc/dronecan_dsdlc.py -O generated $(PATHS)
+
 REQUIREMENTS := dronecan
 REQUIREMENTS_FILE := dronecan-dsdlc/requirements.txt
+
+# Find Python inside the venv when this variable is used
+VENV_PYTHON = $(shell $(SYS_PYTHON) -c "from pathlib import Path; v=Path('$(VENV_DIR)'); candidates=[v/'Scripts'/'python.exe', v/'bin'/'python', v/'bin'/'python.exe']; print(next((str(p) for p in candidates if p.exists()), ''))")
 
 all: setup build
 
@@ -24,13 +29,13 @@ setup: $(DEPS_STAMP)
 
 build: setup
 	@echo Generating headers from DSDL
-	$(SYS_PYTHON) -c "from pathlib import Path; import subprocess, sys; v=Path('$(VENV_DIR)'); candidates=[v/'Scripts'/'python.exe', v/'bin'/'python', v/'bin'/'python.exe']; py=next((str(p) for p in candidates if p.exists()), None); sys.exit('Could not find python inside $(VENV_DIR)') if py is None else subprocess.check_call([py, 'dronecan-dsdlc/dronecan_dsdlc.py', '-O', 'generated', 'dronecan-dsdl/uavcan', 'dronecan-dsdl/dronecan', 'dronecan-dsdl/com', 'dronecan-dsdl/ardupilot', 'custom/warg'])"
+	"$(VENV_PYTHON)" $(SCRIPT)
 
 $(VENV_DIR):
 	$(SYS_PYTHON) -m venv $(VENV_DIR)
 
 $(DEPS_STAMP): $(REQUIREMENTS_FILE) | $(VENV_DIR)
-	$(SYS_PYTHON) -c "from pathlib import Path; import subprocess, sys; v=Path('$(VENV_DIR)'); candidates=[v/'Scripts'/'python.exe', v/'bin'/'python', v/'bin'/'python.exe']; py=next((str(p) for p in candidates if p.exists()), None); sys.exit('Could not find python inside $(VENV_DIR)') if py is None else subprocess.check_call([py, '-m', 'pip', 'install', '-r', '$(REQUIREMENTS_FILE)', '$(REQUIREMENTS)'])"
+	"$(VENV_PYTHON)" -m pip install -r $(REQUIREMENTS_FILE) $(REQUIREMENTS)
 	$(SYS_PYTHON) -c "from pathlib import Path; Path(r'$(DEPS_STAMP)').touch()"
 
 clean:
