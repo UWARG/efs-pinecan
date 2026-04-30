@@ -13,4 +13,4 @@ void initCAN(void);
   * @param  servo The servo to send status for.
   * @retval None
   */
-void sendActuatorStatus(Servo_t servo);
+void sendActuatorStatus(Servo_t *servo);

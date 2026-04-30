@@ -14,11 +14,11 @@ static CanardInstance canard;
 
 // === tx dronecan ===
 // uavcan.equipment.actuator.status
-void sendActuatorStatus(Servo_t servo)
+void sendActuatorStatus(Servo_t *servo)
 {
   // This is kind of garbage data right now, but including for proof of concept of tx
   struct uavcan_equipment_actuator_Status status = {0};
-  status.actuator_id = servo.actuatorID;
+  status.actuator_id = servo->actuatorID;
   status.position = NAN; // Unknown fields should be set to NAN.
   status.force = NAN;
   status.speed = NAN;

@@ -70,6 +70,6 @@ void sendActuatorStatuses(void)
 {
   for(int i = 0; i < SERVO_COUNT; ++i)
   {
-    sendActuatorStatus(servos[i]);
+    sendActuatorStatus(&servos[i]);
   }
 }
