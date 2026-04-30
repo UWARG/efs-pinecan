@@ -54,7 +54,7 @@ jobs:
 
       - name: Configure CMake
         run: |
-          cmake -B build/${{ matrix.config_key }} \
+          cmake -B build/${{ matrix.config_key }}-${{ matrix.build_type }} \
             -S ${{ github.workspace }}/${{ matrix.target }} \
             -G Ninja \
             -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/${{ matrix.target }}/cmake/gcc-arm-none-eabi.cmake \
@@ -62,13 +62,14 @@ jobs:
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
       - name: Build
-        run: cmake --build build/${{ matrix.config_key }}
+        run: cmake --build build/${{ matrix.config_key }}-${{ matrix.build_type }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.config_key }}-${{ matrix.build_type }}
           path: |
-            build/${{ matrix.config_key }}/${{ matrix.build_type }}/**/*.elf
-            build/${{ matrix.config_key }}/${{ matrix.build_type }}/**/*.bin
-            build/${{ matrix.config_key }}/${{ matrix.build_type }}/**/*.hex
+            path: |
+            build/${{ matrix.config_key }}-${{ matrix.build_type }}/**/*.elf
+            build/${{ matrix.config_key }}-${{ matrix.build_type }}/**/*.bin
+            build/${{ matrix.config_key }}-${{ matrix.build_type }}/**/*.hex
