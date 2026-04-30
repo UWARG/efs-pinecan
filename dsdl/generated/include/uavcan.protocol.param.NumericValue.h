@@ -29,17 +29,37 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_protocol_param_NumericValue_encode(struct uavcan_protocol_param_NumericValue* msg, uint8_t* buffer
+uint32_t _uavcan_protocol_param_NumericValue_encode(struct uavcan_protocol_param_NumericValue* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_protocol_param_NumericValue_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_param_NumericValue* msg);
+bool _uavcan_protocol_param_NumericValue_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_param_NumericValue* msg);
+
+static inline uint32_t uavcan_protocol_param_NumericValue_encode(struct uavcan_protocol_param_NumericValue* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_protocol_param_NumericValue_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_protocol_param_NumericValue_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_param_NumericValue* msg) {
+
+    return _uavcan_protocol_param_NumericValue_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _uavcan_protocol_param_NumericValue_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_param_NumericValue* msg, bool tao);
-static inline bool _uavcan_protocol_param_NumericValue_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_param_NumericValue* msg, bool tao);
-void _uavcan_protocol_param_NumericValue_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_param_NumericValue* msg, bool tao) {
+static inline void __uavcan_protocol_param_NumericValue_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_param_NumericValue* msg, bool tao);
+static inline bool __uavcan_protocol_param_NumericValue_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_param_NumericValue* msg, bool tao);
+void __uavcan_protocol_param_NumericValue_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_param_NumericValue* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
@@ -51,7 +71,7 @@ void _uavcan_protocol_param_NumericValue_encode(uint8_t* buffer, uint32_t* bit_o
 
     switch(msg->union_tag) {
         case UAVCAN_PROTOCOL_PARAM_NUMERICVALUE_EMPTY: {
-            _uavcan_protocol_param_Empty_encode(buffer, bit_ofs, &msg->empty, tao);
+            __uavcan_protocol_param_Empty_encode(buffer, bit_ofs, &msg->empty, tao);
             break;
         }
         case UAVCAN_PROTOCOL_PARAM_NUMERICVALUE_INTEGER_VALUE: {
@@ -70,7 +90,7 @@ void _uavcan_protocol_param_NumericValue_encode(uint8_t* buffer, uint32_t* bit_o
 /*
  decode uavcan_protocol_param_NumericValue, return true on failure, false on success
 */
-bool _uavcan_protocol_param_NumericValue_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_param_NumericValue* msg, bool tao) {
+bool __uavcan_protocol_param_NumericValue_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_param_NumericValue* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;
@@ -88,7 +108,7 @@ bool _uavcan_protocol_param_NumericValue_decode(const CanardRxTransfer* transfer
 
     switch(msg->union_tag) {
         case UAVCAN_PROTOCOL_PARAM_NUMERICVALUE_EMPTY: {
-            if (_uavcan_protocol_param_Empty_decode(transfer, bit_ofs, &msg->empty, tao)) {return true;}
+            if (__uavcan_protocol_param_Empty_decode(transfer, bit_ofs, &msg->empty, tao)) {return true;}
             break;
         }
 

@@ -28,17 +28,37 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_protocol_file_GetInfoResponse_encode(struct uavcan_protocol_file_GetInfoResponse* msg, uint8_t* buffer
+uint32_t _uavcan_protocol_file_GetInfoResponse_encode(struct uavcan_protocol_file_GetInfoResponse* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_protocol_file_GetInfoResponse_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_file_GetInfoResponse* msg);
+bool _uavcan_protocol_file_GetInfoResponse_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_file_GetInfoResponse* msg);
+
+static inline uint32_t uavcan_protocol_file_GetInfoResponse_encode(struct uavcan_protocol_file_GetInfoResponse* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_protocol_file_GetInfoResponse_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_protocol_file_GetInfoResponse_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_file_GetInfoResponse* msg) {
+
+    return _uavcan_protocol_file_GetInfoResponse_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _uavcan_protocol_file_GetInfoResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetInfoResponse* msg, bool tao);
-static inline bool _uavcan_protocol_file_GetInfoResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetInfoResponse* msg, bool tao);
-void _uavcan_protocol_file_GetInfoResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetInfoResponse* msg, bool tao) {
+static inline void __uavcan_protocol_file_GetInfoResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetInfoResponse* msg, bool tao);
+static inline bool __uavcan_protocol_file_GetInfoResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetInfoResponse* msg, bool tao);
+void __uavcan_protocol_file_GetInfoResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetInfoResponse* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
@@ -46,14 +66,14 @@ void _uavcan_protocol_file_GetInfoResponse_encode(uint8_t* buffer, uint32_t* bit
 
     canardEncodeScalar(buffer, *bit_ofs, 40, &msg->size);
     *bit_ofs += 40;
-    _uavcan_protocol_file_Error_encode(buffer, bit_ofs, &msg->error, false);
-    _uavcan_protocol_file_EntryType_encode(buffer, bit_ofs, &msg->entry_type, tao);
+    __uavcan_protocol_file_Error_encode(buffer, bit_ofs, &msg->error, false);
+    __uavcan_protocol_file_EntryType_encode(buffer, bit_ofs, &msg->entry_type, tao);
 }
 
 /*
  decode uavcan_protocol_file_GetInfoResponse, return true on failure, false on success
 */
-bool _uavcan_protocol_file_GetInfoResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetInfoResponse* msg, bool tao) {
+bool __uavcan_protocol_file_GetInfoResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetInfoResponse* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;
@@ -61,9 +81,9 @@ bool _uavcan_protocol_file_GetInfoResponse_decode(const CanardRxTransfer* transf
     canardDecodeScalar(transfer, *bit_ofs, 40, false, &msg->size);
     *bit_ofs += 40;
 
-    if (_uavcan_protocol_file_Error_decode(transfer, bit_ofs, &msg->error, false)) {return true;}
+    if (__uavcan_protocol_file_Error_decode(transfer, bit_ofs, &msg->error, false)) {return true;}
 
-    if (_uavcan_protocol_file_EntryType_decode(transfer, bit_ofs, &msg->entry_type, tao)) {return true;}
+    if (__uavcan_protocol_file_EntryType_decode(transfer, bit_ofs, &msg->entry_type, tao)) {return true;}
 
     return false; /* success */
 }

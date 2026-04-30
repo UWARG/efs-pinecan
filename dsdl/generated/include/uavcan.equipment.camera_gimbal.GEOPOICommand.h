@@ -33,17 +33,37 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_equipment_camera_gimbal_GEOPOICommand_encode(struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg, uint8_t* buffer
+uint32_t _uavcan_equipment_camera_gimbal_GEOPOICommand_encode(struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_equipment_camera_gimbal_GEOPOICommand_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg);
+bool _uavcan_equipment_camera_gimbal_GEOPOICommand_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg);
+
+static inline uint32_t uavcan_equipment_camera_gimbal_GEOPOICommand_encode(struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_equipment_camera_gimbal_GEOPOICommand_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_equipment_camera_gimbal_GEOPOICommand_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg) {
+
+    return _uavcan_equipment_camera_gimbal_GEOPOICommand_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _uavcan_equipment_camera_gimbal_GEOPOICommand_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg, bool tao);
-static inline bool _uavcan_equipment_camera_gimbal_GEOPOICommand_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg, bool tao);
-void _uavcan_equipment_camera_gimbal_GEOPOICommand_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg, bool tao) {
+static inline void __uavcan_equipment_camera_gimbal_GEOPOICommand_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg, bool tao);
+static inline bool __uavcan_equipment_camera_gimbal_GEOPOICommand_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg, bool tao);
+void __uavcan_equipment_camera_gimbal_GEOPOICommand_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
@@ -51,7 +71,7 @@ void _uavcan_equipment_camera_gimbal_GEOPOICommand_encode(uint8_t* buffer, uint3
 
     canardEncodeScalar(buffer, *bit_ofs, 8, &msg->gimbal_id);
     *bit_ofs += 8;
-    _uavcan_equipment_camera_gimbal_Mode_encode(buffer, bit_ofs, &msg->mode, false);
+    __uavcan_equipment_camera_gimbal_Mode_encode(buffer, bit_ofs, &msg->mode, false);
     canardEncodeScalar(buffer, *bit_ofs, 32, &msg->longitude_deg_1e7);
     *bit_ofs += 32;
     canardEncodeScalar(buffer, *bit_ofs, 32, &msg->latitude_deg_1e7);
@@ -65,7 +85,7 @@ void _uavcan_equipment_camera_gimbal_GEOPOICommand_encode(uint8_t* buffer, uint3
 /*
  decode uavcan_equipment_camera_gimbal_GEOPOICommand, return true on failure, false on success
 */
-bool _uavcan_equipment_camera_gimbal_GEOPOICommand_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg, bool tao) {
+bool __uavcan_equipment_camera_gimbal_GEOPOICommand_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_GEOPOICommand* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;
@@ -73,7 +93,7 @@ bool _uavcan_equipment_camera_gimbal_GEOPOICommand_decode(const CanardRxTransfer
     canardDecodeScalar(transfer, *bit_ofs, 8, false, &msg->gimbal_id);
     *bit_ofs += 8;
 
-    if (_uavcan_equipment_camera_gimbal_Mode_decode(transfer, bit_ofs, &msg->mode, false)) {return true;}
+    if (__uavcan_equipment_camera_gimbal_Mode_decode(transfer, bit_ofs, &msg->mode, false)) {return true;}
 
     canardDecodeScalar(transfer, *bit_ofs, 32, true, &msg->longitude_deg_1e7);
     *bit_ofs += 32;

@@ -6,14 +6,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t uavcan_equipment_esc_StatusExtended_encode(struct uavcan_equipment_esc_StatusExtended* msg, uint8_t* buffer
+uint32_t _uavcan_equipment_esc_StatusExtended_encode(struct uavcan_equipment_esc_StatusExtended* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, UAVCAN_EQUIPMENT_ESC_STATUSEXTENDED_MAX_SIZE);
-    _uavcan_equipment_esc_StatusExtended_encode(buffer, &bit_ofs, msg, 
+    __uavcan_equipment_esc_StatusExtended_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -26,14 +26,14 @@ uint32_t uavcan_equipment_esc_StatusExtended_encode(struct uavcan_equipment_esc_
 /*
   return true if the decode is invalid
  */
-bool uavcan_equipment_esc_StatusExtended_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_esc_StatusExtended* msg) {
+bool _uavcan_equipment_esc_StatusExtended_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_esc_StatusExtended* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > UAVCAN_EQUIPMENT_ESC_STATUSEXTENDED_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_uavcan_equipment_esc_StatusExtended_decode(transfer, &bit_ofs, msg,
+    if (__uavcan_equipment_esc_StatusExtended_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else

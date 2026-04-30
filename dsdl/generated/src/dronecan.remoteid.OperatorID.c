@@ -6,14 +6,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t dronecan_remoteid_OperatorID_encode(struct dronecan_remoteid_OperatorID* msg, uint8_t* buffer
+uint32_t _dronecan_remoteid_OperatorID_encode(struct dronecan_remoteid_OperatorID* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, DRONECAN_REMOTEID_OPERATORID_MAX_SIZE);
-    _dronecan_remoteid_OperatorID_encode(buffer, &bit_ofs, msg, 
+    __dronecan_remoteid_OperatorID_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -26,14 +26,14 @@ uint32_t dronecan_remoteid_OperatorID_encode(struct dronecan_remoteid_OperatorID
 /*
   return true if the decode is invalid
  */
-bool dronecan_remoteid_OperatorID_decode(const CanardRxTransfer* transfer, struct dronecan_remoteid_OperatorID* msg) {
+bool _dronecan_remoteid_OperatorID_decode(const CanardRxTransfer* transfer, struct dronecan_remoteid_OperatorID* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > DRONECAN_REMOTEID_OPERATORID_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_dronecan_remoteid_OperatorID_decode(transfer, &bit_ofs, msg,
+    if (__dronecan_remoteid_OperatorID_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else

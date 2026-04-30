@@ -16,17 +16,42 @@ extern "C"
 {
 #endif
 
-uint32_t warg_PacketSync_encode(struct warg_PacketSync* msg, uint8_t* buffer
+uint32_t _warg_PacketSync_encode(struct warg_PacketSync* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool warg_PacketSync_decode(const CanardRxTransfer* transfer, struct warg_PacketSync* msg);
+bool _warg_PacketSync_decode(const CanardRxTransfer* transfer, struct warg_PacketSync* msg);
+
+static inline uint32_t warg_PacketSync_encode(struct warg_PacketSync* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    (void)msg;
+    (void)buffer;
+#if CANARD_ENABLE_TAO_OPTION
+    (void)tao;
+#endif
+
+    return 0; // 0-length message encodes to 0 bytes
+
+}
+
+static inline bool warg_PacketSync_decode(const CanardRxTransfer* transfer, struct warg_PacketSync* msg) {
+
+    (void)msg;
+
+    // all transports accurately convey a payload length of 0 bytes so any payload is an error
+    return transfer->payload_len != 0;
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _warg_PacketSync_encode(uint8_t* buffer, uint32_t* bit_ofs, struct warg_PacketSync* msg, bool tao);
-static inline bool _warg_PacketSync_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct warg_PacketSync* msg, bool tao);
-void _warg_PacketSync_encode(uint8_t* buffer, uint32_t* bit_ofs, struct warg_PacketSync* msg, bool tao) {
+static inline void __warg_PacketSync_encode(uint8_t* buffer, uint32_t* bit_ofs, struct warg_PacketSync* msg, bool tao);
+static inline bool __warg_PacketSync_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct warg_PacketSync* msg, bool tao);
+void __warg_PacketSync_encode(uint8_t* buffer, uint32_t* bit_ofs, struct warg_PacketSync* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
@@ -37,7 +62,7 @@ void _warg_PacketSync_encode(uint8_t* buffer, uint32_t* bit_ofs, struct warg_Pac
 /*
  decode warg_PacketSync, return true on failure, false on success
 */
-bool _warg_PacketSync_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct warg_PacketSync* msg, bool tao) {
+bool __warg_PacketSync_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct warg_PacketSync* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;

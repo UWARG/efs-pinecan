@@ -25,17 +25,37 @@ extern "C"
 {
 #endif
 
-uint32_t com_hobbywing_esc_GetMaintenanceInformationResponse_encode(struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg, uint8_t* buffer
+uint32_t _com_hobbywing_esc_GetMaintenanceInformationResponse_encode(struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool com_hobbywing_esc_GetMaintenanceInformationResponse_decode(const CanardRxTransfer* transfer, struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg);
+bool _com_hobbywing_esc_GetMaintenanceInformationResponse_decode(const CanardRxTransfer* transfer, struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg);
+
+static inline uint32_t com_hobbywing_esc_GetMaintenanceInformationResponse_encode(struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _com_hobbywing_esc_GetMaintenanceInformationResponse_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool com_hobbywing_esc_GetMaintenanceInformationResponse_decode(const CanardRxTransfer* transfer, struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg) {
+
+    return _com_hobbywing_esc_GetMaintenanceInformationResponse_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _com_hobbywing_esc_GetMaintenanceInformationResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg, bool tao);
-static inline bool _com_hobbywing_esc_GetMaintenanceInformationResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg, bool tao);
-void _com_hobbywing_esc_GetMaintenanceInformationResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg, bool tao) {
+static inline void __com_hobbywing_esc_GetMaintenanceInformationResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg, bool tao);
+static inline bool __com_hobbywing_esc_GetMaintenanceInformationResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg, bool tao);
+void __com_hobbywing_esc_GetMaintenanceInformationResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
@@ -50,7 +70,7 @@ void _com_hobbywing_esc_GetMaintenanceInformationResponse_encode(uint8_t* buffer
 /*
  decode com_hobbywing_esc_GetMaintenanceInformationResponse, return true on failure, false on success
 */
-bool _com_hobbywing_esc_GetMaintenanceInformationResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg, bool tao) {
+bool __com_hobbywing_esc_GetMaintenanceInformationResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_hobbywing_esc_GetMaintenanceInformationResponse* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;

@@ -7,14 +7,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t dronecan_remoteid_SecureCommandRequest_encode(struct dronecan_remoteid_SecureCommandRequest* msg, uint8_t* buffer
+uint32_t _dronecan_remoteid_SecureCommandRequest_encode(struct dronecan_remoteid_SecureCommandRequest* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, DRONECAN_REMOTEID_SECURECOMMAND_REQUEST_MAX_SIZE);
-    _dronecan_remoteid_SecureCommandRequest_encode(buffer, &bit_ofs, msg, 
+    __dronecan_remoteid_SecureCommandRequest_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -27,14 +27,14 @@ uint32_t dronecan_remoteid_SecureCommandRequest_encode(struct dronecan_remoteid_
 /*
   return true if the decode is invalid
  */
-bool dronecan_remoteid_SecureCommandRequest_decode(const CanardRxTransfer* transfer, struct dronecan_remoteid_SecureCommandRequest* msg) {
+bool _dronecan_remoteid_SecureCommandRequest_decode(const CanardRxTransfer* transfer, struct dronecan_remoteid_SecureCommandRequest* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > DRONECAN_REMOTEID_SECURECOMMAND_REQUEST_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_dronecan_remoteid_SecureCommandRequest_decode(transfer, &bit_ofs, msg,
+    if (__dronecan_remoteid_SecureCommandRequest_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else

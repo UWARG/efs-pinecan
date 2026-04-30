@@ -31,23 +31,43 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_equipment_ahrs_RawIMU_encode(struct uavcan_equipment_ahrs_RawIMU* msg, uint8_t* buffer
+uint32_t _uavcan_equipment_ahrs_RawIMU_encode(struct uavcan_equipment_ahrs_RawIMU* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_equipment_ahrs_RawIMU_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_ahrs_RawIMU* msg);
+bool _uavcan_equipment_ahrs_RawIMU_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_ahrs_RawIMU* msg);
+
+static inline uint32_t uavcan_equipment_ahrs_RawIMU_encode(struct uavcan_equipment_ahrs_RawIMU* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_equipment_ahrs_RawIMU_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_equipment_ahrs_RawIMU_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_ahrs_RawIMU* msg) {
+
+    return _uavcan_equipment_ahrs_RawIMU_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _uavcan_equipment_ahrs_RawIMU_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_ahrs_RawIMU* msg, bool tao);
-static inline bool _uavcan_equipment_ahrs_RawIMU_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_ahrs_RawIMU* msg, bool tao);
-void _uavcan_equipment_ahrs_RawIMU_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_ahrs_RawIMU* msg, bool tao) {
+static inline void __uavcan_equipment_ahrs_RawIMU_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_ahrs_RawIMU* msg, bool tao);
+static inline bool __uavcan_equipment_ahrs_RawIMU_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_ahrs_RawIMU* msg, bool tao);
+void __uavcan_equipment_ahrs_RawIMU_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_ahrs_RawIMU* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
 
-    _uavcan_Timestamp_encode(buffer, bit_ofs, &msg->timestamp, false);
+    __uavcan_Timestamp_encode(buffer, bit_ofs, &msg->timestamp, false);
     canardEncodeScalar(buffer, *bit_ofs, 32, &msg->integration_interval);
     *bit_ofs += 32;
     for (size_t i=0; i < 3; i++) {
@@ -92,12 +112,12 @@ void _uavcan_equipment_ahrs_RawIMU_encode(uint8_t* buffer, uint32_t* bit_ofs, st
 /*
  decode uavcan_equipment_ahrs_RawIMU, return true on failure, false on success
 */
-bool _uavcan_equipment_ahrs_RawIMU_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_ahrs_RawIMU* msg, bool tao) {
+bool __uavcan_equipment_ahrs_RawIMU_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_ahrs_RawIMU* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
-    if (_uavcan_Timestamp_decode(transfer, bit_ofs, &msg->timestamp, false)) {return true;}
+    if (__uavcan_Timestamp_decode(transfer, bit_ofs, &msg->timestamp, false)) {return true;}
 
     canardDecodeScalar(transfer, *bit_ofs, 32, true, &msg->integration_interval);
     *bit_ofs += 32;

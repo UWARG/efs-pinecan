@@ -38,17 +38,37 @@ extern "C"
 {
 #endif
 
-uint32_t ardupilot_equipment_power_BatteryPeriodic_encode(struct ardupilot_equipment_power_BatteryPeriodic* msg, uint8_t* buffer
+uint32_t _ardupilot_equipment_power_BatteryPeriodic_encode(struct ardupilot_equipment_power_BatteryPeriodic* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool ardupilot_equipment_power_BatteryPeriodic_decode(const CanardRxTransfer* transfer, struct ardupilot_equipment_power_BatteryPeriodic* msg);
+bool _ardupilot_equipment_power_BatteryPeriodic_decode(const CanardRxTransfer* transfer, struct ardupilot_equipment_power_BatteryPeriodic* msg);
+
+static inline uint32_t ardupilot_equipment_power_BatteryPeriodic_encode(struct ardupilot_equipment_power_BatteryPeriodic* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _ardupilot_equipment_power_BatteryPeriodic_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool ardupilot_equipment_power_BatteryPeriodic_decode(const CanardRxTransfer* transfer, struct ardupilot_equipment_power_BatteryPeriodic* msg) {
+
+    return _ardupilot_equipment_power_BatteryPeriodic_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _ardupilot_equipment_power_BatteryPeriodic_encode(uint8_t* buffer, uint32_t* bit_ofs, struct ardupilot_equipment_power_BatteryPeriodic* msg, bool tao);
-static inline bool _ardupilot_equipment_power_BatteryPeriodic_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct ardupilot_equipment_power_BatteryPeriodic* msg, bool tao);
-void _ardupilot_equipment_power_BatteryPeriodic_encode(uint8_t* buffer, uint32_t* bit_ofs, struct ardupilot_equipment_power_BatteryPeriodic* msg, bool tao) {
+static inline void __ardupilot_equipment_power_BatteryPeriodic_encode(uint8_t* buffer, uint32_t* bit_ofs, struct ardupilot_equipment_power_BatteryPeriodic* msg, bool tao);
+static inline bool __ardupilot_equipment_power_BatteryPeriodic_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct ardupilot_equipment_power_BatteryPeriodic* msg, bool tao);
+void __ardupilot_equipment_power_BatteryPeriodic_encode(uint8_t* buffer, uint32_t* bit_ofs, struct ardupilot_equipment_power_BatteryPeriodic* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
@@ -125,7 +145,7 @@ void _ardupilot_equipment_power_BatteryPeriodic_encode(uint8_t* buffer, uint32_t
 /*
  decode ardupilot_equipment_power_BatteryPeriodic, return true on failure, false on success
 */
-bool _ardupilot_equipment_power_BatteryPeriodic_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct ardupilot_equipment_power_BatteryPeriodic* msg, bool tao) {
+bool __ardupilot_equipment_power_BatteryPeriodic_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct ardupilot_equipment_power_BatteryPeriodic* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;

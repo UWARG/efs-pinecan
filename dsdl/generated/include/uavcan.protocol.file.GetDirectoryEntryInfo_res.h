@@ -29,40 +29,60 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_protocol_file_GetDirectoryEntryInfoResponse_encode(struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg, uint8_t* buffer
+uint32_t _uavcan_protocol_file_GetDirectoryEntryInfoResponse_encode(struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_protocol_file_GetDirectoryEntryInfoResponse_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg);
+bool _uavcan_protocol_file_GetDirectoryEntryInfoResponse_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg);
+
+static inline uint32_t uavcan_protocol_file_GetDirectoryEntryInfoResponse_encode(struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_protocol_file_GetDirectoryEntryInfoResponse_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_protocol_file_GetDirectoryEntryInfoResponse_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg) {
+
+    return _uavcan_protocol_file_GetDirectoryEntryInfoResponse_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _uavcan_protocol_file_GetDirectoryEntryInfoResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg, bool tao);
-static inline bool _uavcan_protocol_file_GetDirectoryEntryInfoResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg, bool tao);
-void _uavcan_protocol_file_GetDirectoryEntryInfoResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg, bool tao) {
+static inline void __uavcan_protocol_file_GetDirectoryEntryInfoResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg, bool tao);
+static inline bool __uavcan_protocol_file_GetDirectoryEntryInfoResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg, bool tao);
+void __uavcan_protocol_file_GetDirectoryEntryInfoResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
 
-    _uavcan_protocol_file_Error_encode(buffer, bit_ofs, &msg->error, false);
-    _uavcan_protocol_file_EntryType_encode(buffer, bit_ofs, &msg->entry_type, false);
-    _uavcan_protocol_file_Path_encode(buffer, bit_ofs, &msg->entry_full_path, tao);
+    __uavcan_protocol_file_Error_encode(buffer, bit_ofs, &msg->error, false);
+    __uavcan_protocol_file_EntryType_encode(buffer, bit_ofs, &msg->entry_type, false);
+    __uavcan_protocol_file_Path_encode(buffer, bit_ofs, &msg->entry_full_path, tao);
 }
 
 /*
  decode uavcan_protocol_file_GetDirectoryEntryInfoResponse, return true on failure, false on success
 */
-bool _uavcan_protocol_file_GetDirectoryEntryInfoResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg, bool tao) {
+bool __uavcan_protocol_file_GetDirectoryEntryInfoResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_GetDirectoryEntryInfoResponse* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
-    if (_uavcan_protocol_file_Error_decode(transfer, bit_ofs, &msg->error, false)) {return true;}
+    if (__uavcan_protocol_file_Error_decode(transfer, bit_ofs, &msg->error, false)) {return true;}
 
-    if (_uavcan_protocol_file_EntryType_decode(transfer, bit_ofs, &msg->entry_type, false)) {return true;}
+    if (__uavcan_protocol_file_EntryType_decode(transfer, bit_ofs, &msg->entry_type, false)) {return true;}
 
-    if (_uavcan_protocol_file_Path_decode(transfer, bit_ofs, &msg->entry_full_path, tao)) {return true;}
+    if (__uavcan_protocol_file_Path_decode(transfer, bit_ofs, &msg->entry_full_path, tao)) {return true;}
 
     return false; /* success */
 }

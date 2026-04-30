@@ -6,14 +6,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t dronecan_protocol_Stats_encode(struct dronecan_protocol_Stats* msg, uint8_t* buffer
+uint32_t _dronecan_protocol_Stats_encode(struct dronecan_protocol_Stats* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, DRONECAN_PROTOCOL_STATS_MAX_SIZE);
-    _dronecan_protocol_Stats_encode(buffer, &bit_ofs, msg, 
+    __dronecan_protocol_Stats_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -26,14 +26,14 @@ uint32_t dronecan_protocol_Stats_encode(struct dronecan_protocol_Stats* msg, uin
 /*
   return true if the decode is invalid
  */
-bool dronecan_protocol_Stats_decode(const CanardRxTransfer* transfer, struct dronecan_protocol_Stats* msg) {
+bool _dronecan_protocol_Stats_decode(const CanardRxTransfer* transfer, struct dronecan_protocol_Stats* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > DRONECAN_PROTOCOL_STATS_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_dronecan_protocol_Stats_decode(transfer, &bit_ofs, msg,
+    if (__dronecan_protocol_Stats_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else

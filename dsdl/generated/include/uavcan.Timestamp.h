@@ -19,17 +19,37 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_Timestamp_encode(struct uavcan_Timestamp* msg, uint8_t* buffer
+uint32_t _uavcan_Timestamp_encode(struct uavcan_Timestamp* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_Timestamp_decode(const CanardRxTransfer* transfer, struct uavcan_Timestamp* msg);
+bool _uavcan_Timestamp_decode(const CanardRxTransfer* transfer, struct uavcan_Timestamp* msg);
+
+static inline uint32_t uavcan_Timestamp_encode(struct uavcan_Timestamp* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_Timestamp_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_Timestamp_decode(const CanardRxTransfer* transfer, struct uavcan_Timestamp* msg) {
+
+    return _uavcan_Timestamp_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _uavcan_Timestamp_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_Timestamp* msg, bool tao);
-static inline bool _uavcan_Timestamp_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_Timestamp* msg, bool tao);
-void _uavcan_Timestamp_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_Timestamp* msg, bool tao) {
+static inline void __uavcan_Timestamp_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_Timestamp* msg, bool tao);
+static inline bool __uavcan_Timestamp_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_Timestamp* msg, bool tao);
+void __uavcan_Timestamp_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_Timestamp* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
@@ -42,7 +62,7 @@ void _uavcan_Timestamp_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_
 /*
  decode uavcan_Timestamp, return true on failure, false on success
 */
-bool _uavcan_Timestamp_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_Timestamp* msg, bool tao) {
+bool __uavcan_Timestamp_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_Timestamp* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;

@@ -6,14 +6,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t com_hobbywing_esc_GetMajorConfigResponse_encode(struct com_hobbywing_esc_GetMajorConfigResponse* msg, uint8_t* buffer
+uint32_t _com_hobbywing_esc_GetMajorConfigResponse_encode(struct com_hobbywing_esc_GetMajorConfigResponse* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, COM_HOBBYWING_ESC_GETMAJORCONFIG_RESPONSE_MAX_SIZE);
-    _com_hobbywing_esc_GetMajorConfigResponse_encode(buffer, &bit_ofs, msg, 
+    __com_hobbywing_esc_GetMajorConfigResponse_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -26,14 +26,14 @@ uint32_t com_hobbywing_esc_GetMajorConfigResponse_encode(struct com_hobbywing_es
 /*
   return true if the decode is invalid
  */
-bool com_hobbywing_esc_GetMajorConfigResponse_decode(const CanardRxTransfer* transfer, struct com_hobbywing_esc_GetMajorConfigResponse* msg) {
+bool _com_hobbywing_esc_GetMajorConfigResponse_decode(const CanardRxTransfer* transfer, struct com_hobbywing_esc_GetMajorConfigResponse* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > COM_HOBBYWING_ESC_GETMAJORCONFIG_RESPONSE_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_com_hobbywing_esc_GetMajorConfigResponse_decode(transfer, &bit_ofs, msg,
+    if (__com_hobbywing_esc_GetMajorConfigResponse_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else

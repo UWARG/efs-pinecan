@@ -26,24 +26,44 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_protocol_enumeration_Indication_encode(struct uavcan_protocol_enumeration_Indication* msg, uint8_t* buffer
+uint32_t _uavcan_protocol_enumeration_Indication_encode(struct uavcan_protocol_enumeration_Indication* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_protocol_enumeration_Indication_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_enumeration_Indication* msg);
+bool _uavcan_protocol_enumeration_Indication_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_enumeration_Indication* msg);
+
+static inline uint32_t uavcan_protocol_enumeration_Indication_encode(struct uavcan_protocol_enumeration_Indication* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_protocol_enumeration_Indication_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_protocol_enumeration_Indication_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_enumeration_Indication* msg) {
+
+    return _uavcan_protocol_enumeration_Indication_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _uavcan_protocol_enumeration_Indication_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_enumeration_Indication* msg, bool tao);
-static inline bool _uavcan_protocol_enumeration_Indication_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_enumeration_Indication* msg, bool tao);
-void _uavcan_protocol_enumeration_Indication_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_enumeration_Indication* msg, bool tao) {
+static inline void __uavcan_protocol_enumeration_Indication_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_enumeration_Indication* msg, bool tao);
+static inline bool __uavcan_protocol_enumeration_Indication_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_enumeration_Indication* msg, bool tao);
+void __uavcan_protocol_enumeration_Indication_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_enumeration_Indication* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
 
     *bit_ofs += 6;
-    _uavcan_protocol_param_NumericValue_encode(buffer, bit_ofs, &msg->value, false);
+    __uavcan_protocol_param_NumericValue_encode(buffer, bit_ofs, &msg->value, false);
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wtype-limits"
     const uint8_t parameter_name_len = msg->parameter_name.len > 92 ? 92 : msg->parameter_name.len;
@@ -61,14 +81,14 @@ void _uavcan_protocol_enumeration_Indication_encode(uint8_t* buffer, uint32_t* b
 /*
  decode uavcan_protocol_enumeration_Indication, return true on failure, false on success
 */
-bool _uavcan_protocol_enumeration_Indication_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_enumeration_Indication* msg, bool tao) {
+bool __uavcan_protocol_enumeration_Indication_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_enumeration_Indication* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
     *bit_ofs += 6;
 
-    if (_uavcan_protocol_param_NumericValue_decode(transfer, bit_ofs, &msg->value, false)) {return true;}
+    if (__uavcan_protocol_param_NumericValue_decode(transfer, bit_ofs, &msg->value, false)) {return true;}
 
     if (!tao) {
         canardDecodeScalar(transfer, *bit_ofs, 7, false, &msg->parameter_name.len);

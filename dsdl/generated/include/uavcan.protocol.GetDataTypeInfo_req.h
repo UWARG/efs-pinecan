@@ -27,17 +27,37 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_protocol_GetDataTypeInfoRequest_encode(struct uavcan_protocol_GetDataTypeInfoRequest* msg, uint8_t* buffer
+uint32_t _uavcan_protocol_GetDataTypeInfoRequest_encode(struct uavcan_protocol_GetDataTypeInfoRequest* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_GetDataTypeInfoRequest* msg);
+bool _uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_GetDataTypeInfoRequest* msg);
+
+static inline uint32_t uavcan_protocol_GetDataTypeInfoRequest_encode(struct uavcan_protocol_GetDataTypeInfoRequest* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_protocol_GetDataTypeInfoRequest_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_GetDataTypeInfoRequest* msg) {
+
+    return _uavcan_protocol_GetDataTypeInfoRequest_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _uavcan_protocol_GetDataTypeInfoRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao);
-static inline bool _uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao);
-void _uavcan_protocol_GetDataTypeInfoRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao) {
+static inline void __uavcan_protocol_GetDataTypeInfoRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao);
+static inline bool __uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao);
+void __uavcan_protocol_GetDataTypeInfoRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
@@ -45,7 +65,7 @@ void _uavcan_protocol_GetDataTypeInfoRequest_encode(uint8_t* buffer, uint32_t* b
 
     canardEncodeScalar(buffer, *bit_ofs, 16, &msg->id);
     *bit_ofs += 16;
-    _uavcan_protocol_DataTypeKind_encode(buffer, bit_ofs, &msg->kind, false);
+    __uavcan_protocol_DataTypeKind_encode(buffer, bit_ofs, &msg->kind, false);
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wtype-limits"
     const uint8_t name_len = msg->name.len > 80 ? 80 : msg->name.len;
@@ -63,7 +83,7 @@ void _uavcan_protocol_GetDataTypeInfoRequest_encode(uint8_t* buffer, uint32_t* b
 /*
  decode uavcan_protocol_GetDataTypeInfoRequest, return true on failure, false on success
 */
-bool _uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao) {
+bool __uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;
@@ -71,7 +91,7 @@ bool _uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* tran
     canardDecodeScalar(transfer, *bit_ofs, 16, false, &msg->id);
     *bit_ofs += 16;
 
-    if (_uavcan_protocol_DataTypeKind_decode(transfer, bit_ofs, &msg->kind, false)) {return true;}
+    if (__uavcan_protocol_DataTypeKind_decode(transfer, bit_ofs, &msg->kind, false)) {return true;}
 
     if (!tao) {
         canardDecodeScalar(transfer, *bit_ofs, 7, false, &msg->name.len);

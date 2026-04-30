@@ -29,17 +29,37 @@ extern "C"
 {
 #endif
 
-uint32_t com_volz_servo_ActuatorStatus_encode(struct com_volz_servo_ActuatorStatus* msg, uint8_t* buffer
+uint32_t _com_volz_servo_ActuatorStatus_encode(struct com_volz_servo_ActuatorStatus* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool com_volz_servo_ActuatorStatus_decode(const CanardRxTransfer* transfer, struct com_volz_servo_ActuatorStatus* msg);
+bool _com_volz_servo_ActuatorStatus_decode(const CanardRxTransfer* transfer, struct com_volz_servo_ActuatorStatus* msg);
+
+static inline uint32_t com_volz_servo_ActuatorStatus_encode(struct com_volz_servo_ActuatorStatus* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _com_volz_servo_ActuatorStatus_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool com_volz_servo_ActuatorStatus_decode(const CanardRxTransfer* transfer, struct com_volz_servo_ActuatorStatus* msg) {
+
+    return _com_volz_servo_ActuatorStatus_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _com_volz_servo_ActuatorStatus_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_volz_servo_ActuatorStatus* msg, bool tao);
-static inline bool _com_volz_servo_ActuatorStatus_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_volz_servo_ActuatorStatus* msg, bool tao);
-void _com_volz_servo_ActuatorStatus_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_volz_servo_ActuatorStatus* msg, bool tao) {
+static inline void __com_volz_servo_ActuatorStatus_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_volz_servo_ActuatorStatus* msg, bool tao);
+static inline bool __com_volz_servo_ActuatorStatus_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_volz_servo_ActuatorStatus* msg, bool tao);
+void __com_volz_servo_ActuatorStatus_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_volz_servo_ActuatorStatus* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
@@ -65,7 +85,7 @@ void _com_volz_servo_ActuatorStatus_encode(uint8_t* buffer, uint32_t* bit_ofs, s
 /*
  decode com_volz_servo_ActuatorStatus, return true on failure, false on success
 */
-bool _com_volz_servo_ActuatorStatus_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_volz_servo_ActuatorStatus* msg, bool tao) {
+bool __com_volz_servo_ActuatorStatus_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_volz_servo_ActuatorStatus* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;

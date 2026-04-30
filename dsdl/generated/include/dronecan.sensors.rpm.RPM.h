@@ -28,17 +28,37 @@ extern "C"
 {
 #endif
 
-uint32_t dronecan_sensors_rpm_RPM_encode(struct dronecan_sensors_rpm_RPM* msg, uint8_t* buffer
+uint32_t _dronecan_sensors_rpm_RPM_encode(struct dronecan_sensors_rpm_RPM* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool dronecan_sensors_rpm_RPM_decode(const CanardRxTransfer* transfer, struct dronecan_sensors_rpm_RPM* msg);
+bool _dronecan_sensors_rpm_RPM_decode(const CanardRxTransfer* transfer, struct dronecan_sensors_rpm_RPM* msg);
+
+static inline uint32_t dronecan_sensors_rpm_RPM_encode(struct dronecan_sensors_rpm_RPM* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _dronecan_sensors_rpm_RPM_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool dronecan_sensors_rpm_RPM_decode(const CanardRxTransfer* transfer, struct dronecan_sensors_rpm_RPM* msg) {
+
+    return _dronecan_sensors_rpm_RPM_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _dronecan_sensors_rpm_RPM_encode(uint8_t* buffer, uint32_t* bit_ofs, struct dronecan_sensors_rpm_RPM* msg, bool tao);
-static inline bool _dronecan_sensors_rpm_RPM_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct dronecan_sensors_rpm_RPM* msg, bool tao);
-void _dronecan_sensors_rpm_RPM_encode(uint8_t* buffer, uint32_t* bit_ofs, struct dronecan_sensors_rpm_RPM* msg, bool tao) {
+static inline void __dronecan_sensors_rpm_RPM_encode(uint8_t* buffer, uint32_t* bit_ofs, struct dronecan_sensors_rpm_RPM* msg, bool tao);
+static inline bool __dronecan_sensors_rpm_RPM_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct dronecan_sensors_rpm_RPM* msg, bool tao);
+void __dronecan_sensors_rpm_RPM_encode(uint8_t* buffer, uint32_t* bit_ofs, struct dronecan_sensors_rpm_RPM* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
@@ -55,7 +75,7 @@ void _dronecan_sensors_rpm_RPM_encode(uint8_t* buffer, uint32_t* bit_ofs, struct
 /*
  decode dronecan_sensors_rpm_RPM, return true on failure, false on success
 */
-bool _dronecan_sensors_rpm_RPM_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct dronecan_sensors_rpm_RPM* msg, bool tao) {
+bool __dronecan_sensors_rpm_RPM_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct dronecan_sensors_rpm_RPM* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;

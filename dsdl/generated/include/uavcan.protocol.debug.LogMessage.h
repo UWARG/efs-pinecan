@@ -27,23 +27,43 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_protocol_debug_LogMessage_encode(struct uavcan_protocol_debug_LogMessage* msg, uint8_t* buffer
+uint32_t _uavcan_protocol_debug_LogMessage_encode(struct uavcan_protocol_debug_LogMessage* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_protocol_debug_LogMessage_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_debug_LogMessage* msg);
+bool _uavcan_protocol_debug_LogMessage_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_debug_LogMessage* msg);
+
+static inline uint32_t uavcan_protocol_debug_LogMessage_encode(struct uavcan_protocol_debug_LogMessage* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_protocol_debug_LogMessage_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_protocol_debug_LogMessage_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_debug_LogMessage* msg) {
+
+    return _uavcan_protocol_debug_LogMessage_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _uavcan_protocol_debug_LogMessage_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_debug_LogMessage* msg, bool tao);
-static inline bool _uavcan_protocol_debug_LogMessage_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_debug_LogMessage* msg, bool tao);
-void _uavcan_protocol_debug_LogMessage_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_debug_LogMessage* msg, bool tao) {
+static inline void __uavcan_protocol_debug_LogMessage_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_debug_LogMessage* msg, bool tao);
+static inline bool __uavcan_protocol_debug_LogMessage_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_debug_LogMessage* msg, bool tao);
+void __uavcan_protocol_debug_LogMessage_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_debug_LogMessage* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
 
-    _uavcan_protocol_debug_LogLevel_encode(buffer, bit_ofs, &msg->level, false);
+    __uavcan_protocol_debug_LogLevel_encode(buffer, bit_ofs, &msg->level, false);
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wtype-limits"
     const uint8_t source_len = msg->source.len > 31 ? 31 : msg->source.len;
@@ -71,12 +91,12 @@ void _uavcan_protocol_debug_LogMessage_encode(uint8_t* buffer, uint32_t* bit_ofs
 /*
  decode uavcan_protocol_debug_LogMessage, return true on failure, false on success
 */
-bool _uavcan_protocol_debug_LogMessage_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_debug_LogMessage* msg, bool tao) {
+bool __uavcan_protocol_debug_LogMessage_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_debug_LogMessage* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
-    if (_uavcan_protocol_debug_LogLevel_decode(transfer, bit_ofs, &msg->level, false)) {return true;}
+    if (__uavcan_protocol_debug_LogLevel_decode(transfer, bit_ofs, &msg->level, false)) {return true;}
 
     canardDecodeScalar(transfer, *bit_ofs, 5, false, &msg->source.len);
     *bit_ofs += 5;

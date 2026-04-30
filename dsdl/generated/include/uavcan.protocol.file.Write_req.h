@@ -27,17 +27,37 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_protocol_file_WriteRequest_encode(struct uavcan_protocol_file_WriteRequest* msg, uint8_t* buffer
+uint32_t _uavcan_protocol_file_WriteRequest_encode(struct uavcan_protocol_file_WriteRequest* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_protocol_file_WriteRequest_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_file_WriteRequest* msg);
+bool _uavcan_protocol_file_WriteRequest_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_file_WriteRequest* msg);
+
+static inline uint32_t uavcan_protocol_file_WriteRequest_encode(struct uavcan_protocol_file_WriteRequest* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_protocol_file_WriteRequest_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_protocol_file_WriteRequest_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_file_WriteRequest* msg) {
+
+    return _uavcan_protocol_file_WriteRequest_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _uavcan_protocol_file_WriteRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_WriteRequest* msg, bool tao);
-static inline bool _uavcan_protocol_file_WriteRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_WriteRequest* msg, bool tao);
-void _uavcan_protocol_file_WriteRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_WriteRequest* msg, bool tao) {
+static inline void __uavcan_protocol_file_WriteRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_WriteRequest* msg, bool tao);
+static inline bool __uavcan_protocol_file_WriteRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_WriteRequest* msg, bool tao);
+void __uavcan_protocol_file_WriteRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_WriteRequest* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
@@ -45,7 +65,7 @@ void _uavcan_protocol_file_WriteRequest_encode(uint8_t* buffer, uint32_t* bit_of
 
     canardEncodeScalar(buffer, *bit_ofs, 40, &msg->offset);
     *bit_ofs += 40;
-    _uavcan_protocol_file_Path_encode(buffer, bit_ofs, &msg->path, false);
+    __uavcan_protocol_file_Path_encode(buffer, bit_ofs, &msg->path, false);
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wtype-limits"
     const uint8_t data_len = msg->data.len > 192 ? 192 : msg->data.len;
@@ -63,7 +83,7 @@ void _uavcan_protocol_file_WriteRequest_encode(uint8_t* buffer, uint32_t* bit_of
 /*
  decode uavcan_protocol_file_WriteRequest, return true on failure, false on success
 */
-bool _uavcan_protocol_file_WriteRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_WriteRequest* msg, bool tao) {
+bool __uavcan_protocol_file_WriteRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_WriteRequest* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;
@@ -71,7 +91,7 @@ bool _uavcan_protocol_file_WriteRequest_decode(const CanardRxTransfer* transfer,
     canardDecodeScalar(transfer, *bit_ofs, 40, false, &msg->offset);
     *bit_ofs += 40;
 
-    if (_uavcan_protocol_file_Path_decode(transfer, bit_ofs, &msg->path, false)) {return true;}
+    if (__uavcan_protocol_file_Path_decode(transfer, bit_ofs, &msg->path, false)) {return true;}
 
     if (!tao) {
         canardDecodeScalar(transfer, *bit_ofs, 8, false, &msg->data.len);

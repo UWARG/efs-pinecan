@@ -24,17 +24,37 @@ extern "C"
 {
 #endif
 
-uint32_t com_himark_servo_ServoCmd_encode(struct com_himark_servo_ServoCmd* msg, uint8_t* buffer
+uint32_t _com_himark_servo_ServoCmd_encode(struct com_himark_servo_ServoCmd* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool com_himark_servo_ServoCmd_decode(const CanardRxTransfer* transfer, struct com_himark_servo_ServoCmd* msg);
+bool _com_himark_servo_ServoCmd_decode(const CanardRxTransfer* transfer, struct com_himark_servo_ServoCmd* msg);
+
+static inline uint32_t com_himark_servo_ServoCmd_encode(struct com_himark_servo_ServoCmd* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _com_himark_servo_ServoCmd_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool com_himark_servo_ServoCmd_decode(const CanardRxTransfer* transfer, struct com_himark_servo_ServoCmd* msg) {
+
+    return _com_himark_servo_ServoCmd_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
-static inline void _com_himark_servo_ServoCmd_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_himark_servo_ServoCmd* msg, bool tao);
-static inline bool _com_himark_servo_ServoCmd_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_himark_servo_ServoCmd* msg, bool tao);
-void _com_himark_servo_ServoCmd_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_himark_servo_ServoCmd* msg, bool tao) {
+static inline void __com_himark_servo_ServoCmd_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_himark_servo_ServoCmd* msg, bool tao);
+static inline bool __com_himark_servo_ServoCmd_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_himark_servo_ServoCmd* msg, bool tao);
+void __com_himark_servo_ServoCmd_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_himark_servo_ServoCmd* msg, bool tao) {
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
@@ -57,7 +77,7 @@ void _com_himark_servo_ServoCmd_encode(uint8_t* buffer, uint32_t* bit_ofs, struc
 /*
  decode com_himark_servo_ServoCmd, return true on failure, false on success
 */
-bool _com_himark_servo_ServoCmd_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_himark_servo_ServoCmd* msg, bool tao) {
+bool __com_himark_servo_ServoCmd_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_himark_servo_ServoCmd* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;

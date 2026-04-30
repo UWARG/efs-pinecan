@@ -7,14 +7,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t uavcan_protocol_file_GetInfoRequest_encode(struct uavcan_protocol_file_GetInfoRequest* msg, uint8_t* buffer
+uint32_t _uavcan_protocol_file_GetInfoRequest_encode(struct uavcan_protocol_file_GetInfoRequest* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, UAVCAN_PROTOCOL_FILE_GETINFO_REQUEST_MAX_SIZE);
-    _uavcan_protocol_file_GetInfoRequest_encode(buffer, &bit_ofs, msg, 
+    __uavcan_protocol_file_GetInfoRequest_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -27,14 +27,14 @@ uint32_t uavcan_protocol_file_GetInfoRequest_encode(struct uavcan_protocol_file_
 /*
   return true if the decode is invalid
  */
-bool uavcan_protocol_file_GetInfoRequest_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_file_GetInfoRequest* msg) {
+bool _uavcan_protocol_file_GetInfoRequest_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_file_GetInfoRequest* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > UAVCAN_PROTOCOL_FILE_GETINFO_REQUEST_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_uavcan_protocol_file_GetInfoRequest_decode(transfer, &bit_ofs, msg,
+    if (__uavcan_protocol_file_GetInfoRequest_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else
