@@ -2,17 +2,13 @@
 #include <stdio.h>
 #include "pinecanBoard.h"
 #include "pinecan_internals.h"
+#include "pinecan.h"
 
 /* ============ PRIVATE DATA ============ */
 typedef struct {
     CAN_HandleTypeDef *hcan;
     uint8_t hardwareID[16];
 } PinecanBoardData;
-
-static volatile uint8_t head = 0;
-static volatile uint8_t tail = 0;
-static volatile uint8_t count = 0;
-static CanardCANFrame rxQueue[RX_QUEUE_SIZE];
 
 static PinecanBoardData boardData;
 
@@ -145,45 +141,4 @@ void pinecanInit(PinecanInit *initParams) {
         .nodeStatus = initParams->nodeStatus
     };
     init(&commonInitParams);
-}
-
-// queue functions for circular buffer, included in .h
-
-bool enqueueRxQueue(const CanardCANFrame *frame)
-{
-    if (count >= RX_QUEUE_SIZE)
-        return false; // queue full
-
-    rxQueue[head] = *frame;     // copy entire frame
-    head = (head + 1) % RX_QUEUE_SIZE;
-    count++;
-
-    return true;
-}
-
-bool dequeueRxQueue(CanardCANFrame *frame)
-{
-    if (count == 0)
-        return false; // queue empty
-
-    *frame = rxQueue[tail];
-    tail = (tail + 1) % RX_QUEUE_SIZE;
-    count--;
-
-    return true;
-}
-
-CanardCANFrame* peekRxQueue()
-{
-    if (count == 0)
-        return NULL; // queue empty
-    return &rxQueue[tail];
-}
-
-void processCanardRxQueue()
-{
-    CanardCANFrame *nextRxframe = peekRxQueue();
-    if (nextRxframe != NULL)
-        handleRxFrame(nextRxframe);
-    return;
 }

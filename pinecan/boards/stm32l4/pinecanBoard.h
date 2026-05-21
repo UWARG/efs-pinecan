@@ -18,8 +18,3 @@ typedef struct {
  * @retval None
  */
 void pinecanInit(PinecanInit *initParams);
-bool enqueueRxQueue(const CanardCANFrame *frame);
-bool dequeueRxQueue(CanardCANFrame *frame);
-void processCanardRxQueue();
-void handleRxFrame(CanardCANFrame *rxFrame);
-CanardCANFrame* peekRxQueue();

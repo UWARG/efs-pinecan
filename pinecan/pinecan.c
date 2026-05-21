@@ -17,6 +17,15 @@ typedef struct {
     uint32_t nextRunTime1Hz;
 } PinecanData;
 
+typedef struct {
+    uint8_t front;
+    uint8_t back;
+    uint8_t count;
+    CanardCANFrame buffer[RX_QUEUE_SIZE];
+} rxQueueData;
+
+static rxQueueData rxQueue = {0};
+
 static PinecanData data;
 
 /* ============ PRIVATE FUNCTION DECLARATIONS ============ */
@@ -310,16 +319,85 @@ void init(CommonInitParams *initParams) {
 }
 
 void handleRxFrame(CanardCANFrame *rxFrame) {
-    // TODO: this rx frame is deleted after this function returns. If/when adding a queue, make sure to handle this correctly
     canardHandleRxFrame(data.canard, rxFrame, getUptimeMs() * 1000U);
-    dequeueRxQueue(rxFrame); // deletes frame
 }
+
+/*
+* @brief Passes frame to CanardHandleRxFrame.
+* @param CanardCANFrame: Frame to be processed.
+* @returns : N/A
+*/
+
+// queue functions for circular buffer, included in .h
+
+bool enqueueRxQueue(const CanardCANFrame *frame) // only called inside ISR
+{
+    if (rxQueue.count >= RX_QUEUE_SIZE) return false; // queue full
+    
+    rxQueue.buffer[rxQueue.back] = *frame;     // copy entire frame
+    rxQueue.back = (rxQueue.back + 1) % RX_QUEUE_SIZE;
+    rxQueue.count++;
+
+    return true;
+}
+
+/*
+* @brief Add canard frame to queue
+* @param CanardCANFrame*: Frame to enqueue
+* @returns bool: True if successful. False if unable to push to queue
+*/
+
+CanardCANFrame* dequeueRxQueue() // only called outside ISR
+{
+    if (rxQueue.count == 0) return NULL; // queue empty
+
+    CanardCANFrame* frame = &rxQueue.buffer[rxQueue.front];
+    rxQueue.front = (rxQueue.front + 1) % RX_QUEUE_SIZE;
+    rxQueue.count--;
+
+    return frame;
+}
+
+/*
+* @brief Remove canard frame from queue
+* @param CanardCANFrame*: Frame to dequeue
+* @returns bool: True if successful. False if unable to dequeue
+*/
+
+CanardCANFrame* peekRxQueue() // only called outside ISR
+{
+    if (rxQueue.count == 0) return NULL; // queue empty
+
+    return &rxQueue.buffer[rxQueue.front];
+}
+
+/*
+* @brief View frame at front of queue
+* @param : N/A
+* @returns CanardCANFrame*: Frame at front of queue. False if queue is empty
+*/
+
+void processCanardRxQueue()
+{
+    // insert canard frame here
+    CanardCANFrame* frame = dequeueRxQueue();
+    if (frame != NULL) handleRxFrame(frame);
+    return;
+}
+
+/*
+* @brief Passes front of queue to handleRxFrame and dequeues.
+* @param : N/A
+* @returns : N/A
+*/
 
 /* ============ EXTERNAL PUBLIC FUNCTION DEFINITIONS ============ */
 
 void pinecan1ms(void){
     processCanardTxQueue();
+
     processCanardRxQueue();
+    
     if(getUptimeMs() >= data.nextRunTime1Hz)
     {
         data.nextRunTime1Hz = getUptimeMs() + 1000U;
