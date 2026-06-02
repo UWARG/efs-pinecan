@@ -37,18 +37,43 @@ extern "C"
 {
 #endif
 
-uint32_t com_hobbywing_esc_SelfTestRequest_encode(struct com_hobbywing_esc_SelfTestRequest* msg, uint8_t* buffer
+uint32_t _com_hobbywing_esc_SelfTestRequest_encode(struct com_hobbywing_esc_SelfTestRequest* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool com_hobbywing_esc_SelfTestRequest_decode(const CanardRxTransfer* transfer, struct com_hobbywing_esc_SelfTestRequest* msg);
+bool _com_hobbywing_esc_SelfTestRequest_decode(const CanardRxTransfer* transfer, struct com_hobbywing_esc_SelfTestRequest* msg);
+
+static inline uint32_t com_hobbywing_esc_SelfTestRequest_encode(struct com_hobbywing_esc_SelfTestRequest* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    (void)msg;
+    (void)buffer;
+#if CANARD_ENABLE_TAO_OPTION
+    (void)tao;
+#endif
+
+    return 0; // 0-length message encodes to 0 bytes
+
+}
+
+static inline bool com_hobbywing_esc_SelfTestRequest_decode(const CanardRxTransfer* transfer, struct com_hobbywing_esc_SelfTestRequest* msg) {
+
+    (void)msg;
+
+    // all transports accurately convey a payload length of 0 bytes so any payload is an error
+    return transfer->payload_len != 0;
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
 
-static inline void _com_hobbywing_esc_SelfTestRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_hobbywing_esc_SelfTestRequest* msg, bool tao);
-static inline bool _com_hobbywing_esc_SelfTestRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_hobbywing_esc_SelfTestRequest* msg, bool tao);
-void _com_hobbywing_esc_SelfTestRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_hobbywing_esc_SelfTestRequest* msg, bool tao) {
+static inline void __com_hobbywing_esc_SelfTestRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_hobbywing_esc_SelfTestRequest* msg, bool tao);
+static inline bool __com_hobbywing_esc_SelfTestRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_hobbywing_esc_SelfTestRequest* msg, bool tao);
+void __com_hobbywing_esc_SelfTestRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_hobbywing_esc_SelfTestRequest* msg, bool tao) {
 
     (void)buffer;
     (void)bit_ofs;
@@ -64,7 +89,7 @@ void _com_hobbywing_esc_SelfTestRequest_encode(uint8_t* buffer, uint32_t* bit_of
 /*
  decode com_hobbywing_esc_SelfTestRequest, return true on failure, false on success
 */
-bool _com_hobbywing_esc_SelfTestRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_hobbywing_esc_SelfTestRequest* msg, bool tao) {
+bool __com_hobbywing_esc_SelfTestRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_hobbywing_esc_SelfTestRequest* msg, bool tao) {
 
     (void)transfer;
     (void)bit_ofs;

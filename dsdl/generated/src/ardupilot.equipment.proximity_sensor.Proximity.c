@@ -9,14 +9,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t ardupilot_equipment_proximity_sensor_Proximity_encode(struct ardupilot_equipment_proximity_sensor_Proximity* msg, uint8_t* buffer
+uint32_t _ardupilot_equipment_proximity_sensor_Proximity_encode(struct ardupilot_equipment_proximity_sensor_Proximity* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, ARDUPILOT_EQUIPMENT_PROXIMITY_SENSOR_PROXIMITY_MAX_SIZE);
-    _ardupilot_equipment_proximity_sensor_Proximity_encode(buffer, &bit_ofs, msg, 
+    __ardupilot_equipment_proximity_sensor_Proximity_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -29,14 +29,14 @@ uint32_t ardupilot_equipment_proximity_sensor_Proximity_encode(struct ardupilot_
 /*
   return true if the decode is invalid
  */
-bool ardupilot_equipment_proximity_sensor_Proximity_decode(const CanardRxTransfer* transfer, struct ardupilot_equipment_proximity_sensor_Proximity* msg) {
+bool _ardupilot_equipment_proximity_sensor_Proximity_decode(const CanardRxTransfer* transfer, struct ardupilot_equipment_proximity_sensor_Proximity* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > ARDUPILOT_EQUIPMENT_PROXIMITY_SENSOR_PROXIMITY_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_ardupilot_equipment_proximity_sensor_Proximity_decode(transfer, &bit_ofs, msg,
+    if (__ardupilot_equipment_proximity_sensor_Proximity_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else

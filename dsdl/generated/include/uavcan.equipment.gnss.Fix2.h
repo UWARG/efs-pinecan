@@ -143,18 +143,38 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_equipment_gnss_Fix2_encode(struct uavcan_equipment_gnss_Fix2* msg, uint8_t* buffer
+uint32_t _uavcan_equipment_gnss_Fix2_encode(struct uavcan_equipment_gnss_Fix2* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_equipment_gnss_Fix2_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_gnss_Fix2* msg);
+bool _uavcan_equipment_gnss_Fix2_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_gnss_Fix2* msg);
+
+static inline uint32_t uavcan_equipment_gnss_Fix2_encode(struct uavcan_equipment_gnss_Fix2* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_equipment_gnss_Fix2_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_equipment_gnss_Fix2_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_gnss_Fix2* msg) {
+
+    return _uavcan_equipment_gnss_Fix2_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
 
-static inline void _uavcan_equipment_gnss_Fix2_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_gnss_Fix2* msg, bool tao);
-static inline bool _uavcan_equipment_gnss_Fix2_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_gnss_Fix2* msg, bool tao);
-void _uavcan_equipment_gnss_Fix2_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_gnss_Fix2* msg, bool tao) {
+static inline void __uavcan_equipment_gnss_Fix2_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_gnss_Fix2* msg, bool tao);
+static inline bool __uavcan_equipment_gnss_Fix2_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_gnss_Fix2* msg, bool tao);
+void __uavcan_equipment_gnss_Fix2_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_gnss_Fix2* msg, bool tao) {
 
     (void)buffer;
     (void)bit_ofs;
@@ -165,13 +185,13 @@ void _uavcan_equipment_gnss_Fix2_encode(uint8_t* buffer, uint32_t* bit_ofs, stru
 
 
 
-    _uavcan_Timestamp_encode(buffer, bit_ofs, &msg->timestamp, false);
+    __uavcan_Timestamp_encode(buffer, bit_ofs, &msg->timestamp, false);
 
 
 
 
 
-    _uavcan_Timestamp_encode(buffer, bit_ofs, &msg->gnss_timestamp, false);
+    __uavcan_Timestamp_encode(buffer, bit_ofs, &msg->gnss_timestamp, false);
 
 
 
@@ -349,7 +369,7 @@ void _uavcan_equipment_gnss_Fix2_encode(uint8_t* buffer, uint32_t* bit_ofs, stru
 
 
 
-        _uavcan_equipment_gnss_ECEFPositionVelocity_encode(buffer, bit_ofs, &msg->ecef_position_velocity.data[i], false);
+        __uavcan_equipment_gnss_ECEFPositionVelocity_encode(buffer, bit_ofs, &msg->ecef_position_velocity.data[i], false);
 
 
     }
@@ -363,7 +383,7 @@ void _uavcan_equipment_gnss_Fix2_encode(uint8_t* buffer, uint32_t* bit_ofs, stru
 /*
  decode uavcan_equipment_gnss_Fix2, return true on failure, false on success
 */
-bool _uavcan_equipment_gnss_Fix2_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_gnss_Fix2* msg, bool tao) {
+bool __uavcan_equipment_gnss_Fix2_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_gnss_Fix2* msg, bool tao) {
 
     (void)transfer;
     (void)bit_ofs;
@@ -373,14 +393,14 @@ bool _uavcan_equipment_gnss_Fix2_decode(const CanardRxTransfer* transfer, uint32
 
 
 
-    if (_uavcan_Timestamp_decode(transfer, bit_ofs, &msg->timestamp, false)) {return true;}
+    if (__uavcan_Timestamp_decode(transfer, bit_ofs, &msg->timestamp, false)) {return true;}
 
 
 
 
 
 
-    if (_uavcan_Timestamp_decode(transfer, bit_ofs, &msg->gnss_timestamp, false)) {return true;}
+    if (__uavcan_Timestamp_decode(transfer, bit_ofs, &msg->gnss_timestamp, false)) {return true;}
 
 
 
@@ -584,7 +604,7 @@ bool _uavcan_equipment_gnss_Fix2_decode(const CanardRxTransfer* transfer, uint32
         uint32_t max_bits = (transfer->payload_len*8)-7; // TAO elements must be >= 8 bits
         while (max_bits > *bit_ofs) {
 
-            if (!max_len-- || _uavcan_equipment_gnss_ECEFPositionVelocity_decode(transfer, bit_ofs, &msg->ecef_position_velocity.data[msg->ecef_position_velocity.len], false)) {return true;}
+            if (!max_len-- || __uavcan_equipment_gnss_ECEFPositionVelocity_decode(transfer, bit_ofs, &msg->ecef_position_velocity.data[msg->ecef_position_velocity.len], false)) {return true;}
             msg->ecef_position_velocity.len++;
 
         }
@@ -603,7 +623,7 @@ bool _uavcan_equipment_gnss_Fix2_decode(const CanardRxTransfer* transfer, uint32
 
 
 
-            if (_uavcan_equipment_gnss_ECEFPositionVelocity_decode(transfer, bit_ofs, &msg->ecef_position_velocity.data[i], false)) {return true;}
+            if (__uavcan_equipment_gnss_ECEFPositionVelocity_decode(transfer, bit_ofs, &msg->ecef_position_velocity.data[i], false)) {return true;}
 
 
         }

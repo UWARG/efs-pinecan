@@ -45,18 +45,38 @@ extern "C"
 {
 #endif
 
-uint32_t com_tmotor_esc_PUSHCAN_encode(struct com_tmotor_esc_PUSHCAN* msg, uint8_t* buffer
+uint32_t _com_tmotor_esc_PUSHCAN_encode(struct com_tmotor_esc_PUSHCAN* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool com_tmotor_esc_PUSHCAN_decode(const CanardRxTransfer* transfer, struct com_tmotor_esc_PUSHCAN* msg);
+bool _com_tmotor_esc_PUSHCAN_decode(const CanardRxTransfer* transfer, struct com_tmotor_esc_PUSHCAN* msg);
+
+static inline uint32_t com_tmotor_esc_PUSHCAN_encode(struct com_tmotor_esc_PUSHCAN* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _com_tmotor_esc_PUSHCAN_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool com_tmotor_esc_PUSHCAN_decode(const CanardRxTransfer* transfer, struct com_tmotor_esc_PUSHCAN* msg) {
+
+    return _com_tmotor_esc_PUSHCAN_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
 
-static inline void _com_tmotor_esc_PUSHCAN_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_tmotor_esc_PUSHCAN* msg, bool tao);
-static inline bool _com_tmotor_esc_PUSHCAN_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_tmotor_esc_PUSHCAN* msg, bool tao);
-void _com_tmotor_esc_PUSHCAN_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_tmotor_esc_PUSHCAN* msg, bool tao) {
+static inline void __com_tmotor_esc_PUSHCAN_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_tmotor_esc_PUSHCAN* msg, bool tao);
+static inline bool __com_tmotor_esc_PUSHCAN_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_tmotor_esc_PUSHCAN* msg, bool tao);
+void __com_tmotor_esc_PUSHCAN_encode(uint8_t* buffer, uint32_t* bit_ofs, struct com_tmotor_esc_PUSHCAN* msg, bool tao) {
 
     (void)buffer;
     (void)bit_ofs;
@@ -112,7 +132,7 @@ void _com_tmotor_esc_PUSHCAN_encode(uint8_t* buffer, uint32_t* bit_ofs, struct c
 /*
  decode com_tmotor_esc_PUSHCAN, return true on failure, false on success
 */
-bool _com_tmotor_esc_PUSHCAN_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_tmotor_esc_PUSHCAN* msg, bool tao) {
+bool __com_tmotor_esc_PUSHCAN_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct com_tmotor_esc_PUSHCAN* msg, bool tao) {
 
     (void)transfer;
     (void)bit_ofs;

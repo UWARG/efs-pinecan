@@ -9,14 +9,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t dronecan_sensors_rc_RCInput_encode(struct dronecan_sensors_rc_RCInput* msg, uint8_t* buffer
+uint32_t _dronecan_sensors_rc_RCInput_encode(struct dronecan_sensors_rc_RCInput* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, DRONECAN_SENSORS_RC_RCINPUT_MAX_SIZE);
-    _dronecan_sensors_rc_RCInput_encode(buffer, &bit_ofs, msg, 
+    __dronecan_sensors_rc_RCInput_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -29,14 +29,14 @@ uint32_t dronecan_sensors_rc_RCInput_encode(struct dronecan_sensors_rc_RCInput* 
 /*
   return true if the decode is invalid
  */
-bool dronecan_sensors_rc_RCInput_decode(const CanardRxTransfer* transfer, struct dronecan_sensors_rc_RCInput* msg) {
+bool _dronecan_sensors_rc_RCInput_decode(const CanardRxTransfer* transfer, struct dronecan_sensors_rc_RCInput* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > DRONECAN_SENSORS_RC_RCINPUT_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_dronecan_sensors_rc_RCInput_decode(transfer, &bit_ofs, msg,
+    if (__dronecan_sensors_rc_RCInput_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else

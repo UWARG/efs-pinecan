@@ -199,18 +199,38 @@ extern "C"
 {
 #endif
 
-uint32_t dronecan_remoteid_Location_encode(struct dronecan_remoteid_Location* msg, uint8_t* buffer
+uint32_t _dronecan_remoteid_Location_encode(struct dronecan_remoteid_Location* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool dronecan_remoteid_Location_decode(const CanardRxTransfer* transfer, struct dronecan_remoteid_Location* msg);
+bool _dronecan_remoteid_Location_decode(const CanardRxTransfer* transfer, struct dronecan_remoteid_Location* msg);
+
+static inline uint32_t dronecan_remoteid_Location_encode(struct dronecan_remoteid_Location* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _dronecan_remoteid_Location_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool dronecan_remoteid_Location_decode(const CanardRxTransfer* transfer, struct dronecan_remoteid_Location* msg) {
+
+    return _dronecan_remoteid_Location_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
 
-static inline void _dronecan_remoteid_Location_encode(uint8_t* buffer, uint32_t* bit_ofs, struct dronecan_remoteid_Location* msg, bool tao);
-static inline bool _dronecan_remoteid_Location_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct dronecan_remoteid_Location* msg, bool tao);
-void _dronecan_remoteid_Location_encode(uint8_t* buffer, uint32_t* bit_ofs, struct dronecan_remoteid_Location* msg, bool tao) {
+static inline void __dronecan_remoteid_Location_encode(uint8_t* buffer, uint32_t* bit_ofs, struct dronecan_remoteid_Location* msg, bool tao);
+static inline bool __dronecan_remoteid_Location_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct dronecan_remoteid_Location* msg, bool tao);
+void __dronecan_remoteid_Location_encode(uint8_t* buffer, uint32_t* bit_ofs, struct dronecan_remoteid_Location* msg, bool tao) {
 
     (void)buffer;
     (void)bit_ofs;
@@ -395,7 +415,7 @@ void _dronecan_remoteid_Location_encode(uint8_t* buffer, uint32_t* bit_ofs, stru
 /*
  decode dronecan_remoteid_Location, return true on failure, false on success
 */
-bool _dronecan_remoteid_Location_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct dronecan_remoteid_Location* msg, bool tao) {
+bool __dronecan_remoteid_Location_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct dronecan_remoteid_Location* msg, bool tao) {
 
     (void)transfer;
     (void)bit_ofs;

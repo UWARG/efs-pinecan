@@ -63,18 +63,38 @@ extern "C"
 {
 #endif
 
-uint32_t ardupilot_gnss_RelPosHeading_encode(struct ardupilot_gnss_RelPosHeading* msg, uint8_t* buffer
+uint32_t _ardupilot_gnss_RelPosHeading_encode(struct ardupilot_gnss_RelPosHeading* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool ardupilot_gnss_RelPosHeading_decode(const CanardRxTransfer* transfer, struct ardupilot_gnss_RelPosHeading* msg);
+bool _ardupilot_gnss_RelPosHeading_decode(const CanardRxTransfer* transfer, struct ardupilot_gnss_RelPosHeading* msg);
+
+static inline uint32_t ardupilot_gnss_RelPosHeading_encode(struct ardupilot_gnss_RelPosHeading* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _ardupilot_gnss_RelPosHeading_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool ardupilot_gnss_RelPosHeading_decode(const CanardRxTransfer* transfer, struct ardupilot_gnss_RelPosHeading* msg) {
+
+    return _ardupilot_gnss_RelPosHeading_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
 
-static inline void _ardupilot_gnss_RelPosHeading_encode(uint8_t* buffer, uint32_t* bit_ofs, struct ardupilot_gnss_RelPosHeading* msg, bool tao);
-static inline bool _ardupilot_gnss_RelPosHeading_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct ardupilot_gnss_RelPosHeading* msg, bool tao);
-void _ardupilot_gnss_RelPosHeading_encode(uint8_t* buffer, uint32_t* bit_ofs, struct ardupilot_gnss_RelPosHeading* msg, bool tao) {
+static inline void __ardupilot_gnss_RelPosHeading_encode(uint8_t* buffer, uint32_t* bit_ofs, struct ardupilot_gnss_RelPosHeading* msg, bool tao);
+static inline bool __ardupilot_gnss_RelPosHeading_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct ardupilot_gnss_RelPosHeading* msg, bool tao);
+void __ardupilot_gnss_RelPosHeading_encode(uint8_t* buffer, uint32_t* bit_ofs, struct ardupilot_gnss_RelPosHeading* msg, bool tao) {
 
     (void)buffer;
     (void)bit_ofs;
@@ -85,7 +105,7 @@ void _ardupilot_gnss_RelPosHeading_encode(uint8_t* buffer, uint32_t* bit_ofs, st
 
 
 
-    _uavcan_Timestamp_encode(buffer, bit_ofs, &msg->timestamp, false);
+    __uavcan_Timestamp_encode(buffer, bit_ofs, &msg->timestamp, false);
 
 
 
@@ -147,7 +167,7 @@ void _ardupilot_gnss_RelPosHeading_encode(uint8_t* buffer, uint32_t* bit_ofs, st
 /*
  decode ardupilot_gnss_RelPosHeading, return true on failure, false on success
 */
-bool _ardupilot_gnss_RelPosHeading_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct ardupilot_gnss_RelPosHeading* msg, bool tao) {
+bool __ardupilot_gnss_RelPosHeading_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct ardupilot_gnss_RelPosHeading* msg, bool tao) {
 
     (void)transfer;
     (void)bit_ofs;
@@ -157,7 +177,7 @@ bool _ardupilot_gnss_RelPosHeading_decode(const CanardRxTransfer* transfer, uint
 
 
 
-    if (_uavcan_Timestamp_decode(transfer, bit_ofs, &msg->timestamp, false)) {return true;}
+    if (__uavcan_Timestamp_decode(transfer, bit_ofs, &msg->timestamp, false)) {return true;}
 
 
 

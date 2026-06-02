@@ -9,14 +9,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t com_tmotor_esc_FocCtrl_encode(struct com_tmotor_esc_FocCtrl* msg, uint8_t* buffer
+uint32_t _com_tmotor_esc_FocCtrl_encode(struct com_tmotor_esc_FocCtrl* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, COM_TMOTOR_ESC_FOCCTRL_MAX_SIZE);
-    _com_tmotor_esc_FocCtrl_encode(buffer, &bit_ofs, msg, 
+    __com_tmotor_esc_FocCtrl_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -29,14 +29,14 @@ uint32_t com_tmotor_esc_FocCtrl_encode(struct com_tmotor_esc_FocCtrl* msg, uint8
 /*
   return true if the decode is invalid
  */
-bool com_tmotor_esc_FocCtrl_decode(const CanardRxTransfer* transfer, struct com_tmotor_esc_FocCtrl* msg) {
+bool _com_tmotor_esc_FocCtrl_decode(const CanardRxTransfer* transfer, struct com_tmotor_esc_FocCtrl* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > COM_TMOTOR_ESC_FOCCTRL_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_com_tmotor_esc_FocCtrl_decode(transfer, &bit_ofs, msg,
+    if (__com_tmotor_esc_FocCtrl_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else

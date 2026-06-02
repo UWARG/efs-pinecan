@@ -41,18 +41,38 @@ extern "C"
 {
 #endif
 
-uint32_t ardupilot_gnss_MovingBaselineData_encode(struct ardupilot_gnss_MovingBaselineData* msg, uint8_t* buffer
+uint32_t _ardupilot_gnss_MovingBaselineData_encode(struct ardupilot_gnss_MovingBaselineData* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool ardupilot_gnss_MovingBaselineData_decode(const CanardRxTransfer* transfer, struct ardupilot_gnss_MovingBaselineData* msg);
+bool _ardupilot_gnss_MovingBaselineData_decode(const CanardRxTransfer* transfer, struct ardupilot_gnss_MovingBaselineData* msg);
+
+static inline uint32_t ardupilot_gnss_MovingBaselineData_encode(struct ardupilot_gnss_MovingBaselineData* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _ardupilot_gnss_MovingBaselineData_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool ardupilot_gnss_MovingBaselineData_decode(const CanardRxTransfer* transfer, struct ardupilot_gnss_MovingBaselineData* msg) {
+
+    return _ardupilot_gnss_MovingBaselineData_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
 
-static inline void _ardupilot_gnss_MovingBaselineData_encode(uint8_t* buffer, uint32_t* bit_ofs, struct ardupilot_gnss_MovingBaselineData* msg, bool tao);
-static inline bool _ardupilot_gnss_MovingBaselineData_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct ardupilot_gnss_MovingBaselineData* msg, bool tao);
-void _ardupilot_gnss_MovingBaselineData_encode(uint8_t* buffer, uint32_t* bit_ofs, struct ardupilot_gnss_MovingBaselineData* msg, bool tao) {
+static inline void __ardupilot_gnss_MovingBaselineData_encode(uint8_t* buffer, uint32_t* bit_ofs, struct ardupilot_gnss_MovingBaselineData* msg, bool tao);
+static inline bool __ardupilot_gnss_MovingBaselineData_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct ardupilot_gnss_MovingBaselineData* msg, bool tao);
+void __ardupilot_gnss_MovingBaselineData_encode(uint8_t* buffer, uint32_t* bit_ofs, struct ardupilot_gnss_MovingBaselineData* msg, bool tao) {
 
     (void)buffer;
     (void)bit_ofs;
@@ -99,7 +119,7 @@ void _ardupilot_gnss_MovingBaselineData_encode(uint8_t* buffer, uint32_t* bit_of
 /*
  decode ardupilot_gnss_MovingBaselineData, return true on failure, false on success
 */
-bool _ardupilot_gnss_MovingBaselineData_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct ardupilot_gnss_MovingBaselineData* msg, bool tao) {
+bool __ardupilot_gnss_MovingBaselineData_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct ardupilot_gnss_MovingBaselineData* msg, bool tao) {
 
     (void)transfer;
     (void)bit_ofs;

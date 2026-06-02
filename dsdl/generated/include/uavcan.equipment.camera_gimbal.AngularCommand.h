@@ -51,18 +51,38 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_equipment_camera_gimbal_AngularCommand_encode(struct uavcan_equipment_camera_gimbal_AngularCommand* msg, uint8_t* buffer
+uint32_t _uavcan_equipment_camera_gimbal_AngularCommand_encode(struct uavcan_equipment_camera_gimbal_AngularCommand* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_equipment_camera_gimbal_AngularCommand_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_camera_gimbal_AngularCommand* msg);
+bool _uavcan_equipment_camera_gimbal_AngularCommand_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_camera_gimbal_AngularCommand* msg);
+
+static inline uint32_t uavcan_equipment_camera_gimbal_AngularCommand_encode(struct uavcan_equipment_camera_gimbal_AngularCommand* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_equipment_camera_gimbal_AngularCommand_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_equipment_camera_gimbal_AngularCommand_decode(const CanardRxTransfer* transfer, struct uavcan_equipment_camera_gimbal_AngularCommand* msg) {
+
+    return _uavcan_equipment_camera_gimbal_AngularCommand_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
 
-static inline void _uavcan_equipment_camera_gimbal_AngularCommand_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_AngularCommand* msg, bool tao);
-static inline bool _uavcan_equipment_camera_gimbal_AngularCommand_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_AngularCommand* msg, bool tao);
-void _uavcan_equipment_camera_gimbal_AngularCommand_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_AngularCommand* msg, bool tao) {
+static inline void __uavcan_equipment_camera_gimbal_AngularCommand_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_AngularCommand* msg, bool tao);
+static inline bool __uavcan_equipment_camera_gimbal_AngularCommand_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_AngularCommand* msg, bool tao);
+void __uavcan_equipment_camera_gimbal_AngularCommand_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_AngularCommand* msg, bool tao) {
 
     (void)buffer;
     (void)bit_ofs;
@@ -82,7 +102,7 @@ void _uavcan_equipment_camera_gimbal_AngularCommand_encode(uint8_t* buffer, uint
 
 
 
-    _uavcan_equipment_camera_gimbal_Mode_encode(buffer, bit_ofs, &msg->mode, false);
+    __uavcan_equipment_camera_gimbal_Mode_encode(buffer, bit_ofs, &msg->mode, false);
 
 
 
@@ -113,7 +133,7 @@ void _uavcan_equipment_camera_gimbal_AngularCommand_encode(uint8_t* buffer, uint
 /*
  decode uavcan_equipment_camera_gimbal_AngularCommand, return true on failure, false on success
 */
-bool _uavcan_equipment_camera_gimbal_AngularCommand_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_AngularCommand* msg, bool tao) {
+bool __uavcan_equipment_camera_gimbal_AngularCommand_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_equipment_camera_gimbal_AngularCommand* msg, bool tao) {
 
     (void)transfer;
     (void)bit_ofs;
@@ -133,7 +153,7 @@ bool _uavcan_equipment_camera_gimbal_AngularCommand_decode(const CanardRxTransfe
 
 
 
-    if (_uavcan_equipment_camera_gimbal_Mode_decode(transfer, bit_ofs, &msg->mode, false)) {return true;}
+    if (__uavcan_equipment_camera_gimbal_Mode_decode(transfer, bit_ofs, &msg->mode, false)) {return true;}
 
 
 

@@ -9,14 +9,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t uavcan_protocol_dynamic_node_id_server_Entry_encode(struct uavcan_protocol_dynamic_node_id_server_Entry* msg, uint8_t* buffer
+uint32_t _uavcan_protocol_dynamic_node_id_server_Entry_encode(struct uavcan_protocol_dynamic_node_id_server_Entry* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, UAVCAN_PROTOCOL_DYNAMIC_NODE_ID_SERVER_ENTRY_MAX_SIZE);
-    _uavcan_protocol_dynamic_node_id_server_Entry_encode(buffer, &bit_ofs, msg, 
+    __uavcan_protocol_dynamic_node_id_server_Entry_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -29,14 +29,14 @@ uint32_t uavcan_protocol_dynamic_node_id_server_Entry_encode(struct uavcan_proto
 /*
   return true if the decode is invalid
  */
-bool uavcan_protocol_dynamic_node_id_server_Entry_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_dynamic_node_id_server_Entry* msg) {
+bool _uavcan_protocol_dynamic_node_id_server_Entry_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_dynamic_node_id_server_Entry* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > UAVCAN_PROTOCOL_DYNAMIC_NODE_ID_SERVER_ENTRY_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_uavcan_protocol_dynamic_node_id_server_Entry_decode(transfer, &bit_ofs, msg,
+    if (__uavcan_protocol_dynamic_node_id_server_Entry_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else

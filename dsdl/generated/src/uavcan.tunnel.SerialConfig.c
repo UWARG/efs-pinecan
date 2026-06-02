@@ -9,14 +9,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t uavcan_tunnel_SerialConfig_encode(struct uavcan_tunnel_SerialConfig* msg, uint8_t* buffer
+uint32_t _uavcan_tunnel_SerialConfig_encode(struct uavcan_tunnel_SerialConfig* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, UAVCAN_TUNNEL_SERIALCONFIG_MAX_SIZE);
-    _uavcan_tunnel_SerialConfig_encode(buffer, &bit_ofs, msg, 
+    __uavcan_tunnel_SerialConfig_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -29,14 +29,14 @@ uint32_t uavcan_tunnel_SerialConfig_encode(struct uavcan_tunnel_SerialConfig* ms
 /*
   return true if the decode is invalid
  */
-bool uavcan_tunnel_SerialConfig_decode(const CanardRxTransfer* transfer, struct uavcan_tunnel_SerialConfig* msg) {
+bool _uavcan_tunnel_SerialConfig_decode(const CanardRxTransfer* transfer, struct uavcan_tunnel_SerialConfig* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > UAVCAN_TUNNEL_SERIALCONFIG_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_uavcan_tunnel_SerialConfig_decode(transfer, &bit_ofs, msg,
+    if (__uavcan_tunnel_SerialConfig_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else

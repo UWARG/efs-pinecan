@@ -18,6 +18,18 @@
 
 #define DRONECAN_SENSORS_RC_RCINPUT_STATUS_FAILSAFE 2
 
+#define DRONECAN_SENSORS_RC_RCINPUT_STATUS_QUALITY_TYPE 28
+
+#define DRONECAN_SENSORS_RC_RCINPUT_QUALITY_TYPE_RSSI 0
+
+#define DRONECAN_SENSORS_RC_RCINPUT_QUALITY_TYPE_LQ_ACTIVE_ANTENNA 4
+
+#define DRONECAN_SENSORS_RC_RCINPUT_QUALITY_TYPE_RSSI_DBM 8
+
+#define DRONECAN_SENSORS_RC_RCINPUT_QUALITY_TYPE_SNR 12
+
+#define DRONECAN_SENSORS_RC_RCINPUT_QUALITY_TYPE_TX_POWER 16
+
 
 
 
@@ -59,18 +71,38 @@ extern "C"
 {
 #endif
 
-uint32_t dronecan_sensors_rc_RCInput_encode(struct dronecan_sensors_rc_RCInput* msg, uint8_t* buffer
+uint32_t _dronecan_sensors_rc_RCInput_encode(struct dronecan_sensors_rc_RCInput* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool dronecan_sensors_rc_RCInput_decode(const CanardRxTransfer* transfer, struct dronecan_sensors_rc_RCInput* msg);
+bool _dronecan_sensors_rc_RCInput_decode(const CanardRxTransfer* transfer, struct dronecan_sensors_rc_RCInput* msg);
+
+static inline uint32_t dronecan_sensors_rc_RCInput_encode(struct dronecan_sensors_rc_RCInput* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _dronecan_sensors_rc_RCInput_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool dronecan_sensors_rc_RCInput_decode(const CanardRxTransfer* transfer, struct dronecan_sensors_rc_RCInput* msg) {
+
+    return _dronecan_sensors_rc_RCInput_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
 
-static inline void _dronecan_sensors_rc_RCInput_encode(uint8_t* buffer, uint32_t* bit_ofs, struct dronecan_sensors_rc_RCInput* msg, bool tao);
-static inline bool _dronecan_sensors_rc_RCInput_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct dronecan_sensors_rc_RCInput* msg, bool tao);
-void _dronecan_sensors_rc_RCInput_encode(uint8_t* buffer, uint32_t* bit_ofs, struct dronecan_sensors_rc_RCInput* msg, bool tao) {
+static inline void __dronecan_sensors_rc_RCInput_encode(uint8_t* buffer, uint32_t* bit_ofs, struct dronecan_sensors_rc_RCInput* msg, bool tao);
+static inline bool __dronecan_sensors_rc_RCInput_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct dronecan_sensors_rc_RCInput* msg, bool tao);
+void __dronecan_sensors_rc_RCInput_encode(uint8_t* buffer, uint32_t* bit_ofs, struct dronecan_sensors_rc_RCInput* msg, bool tao) {
 
     (void)buffer;
     (void)bit_ofs;
@@ -144,7 +176,7 @@ void _dronecan_sensors_rc_RCInput_encode(uint8_t* buffer, uint32_t* bit_ofs, str
 /*
  decode dronecan_sensors_rc_RCInput, return true on failure, false on success
 */
-bool _dronecan_sensors_rc_RCInput_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct dronecan_sensors_rc_RCInput* msg, bool tao) {
+bool __dronecan_sensors_rc_RCInput_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct dronecan_sensors_rc_RCInput* msg, bool tao) {
 
     (void)transfer;
     (void)bit_ofs;

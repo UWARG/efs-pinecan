@@ -53,6 +53,7 @@ static CanardInstance canard;
 static uint8_t memory_pool[1024];
 static struct uavcan_protocol_NodeStatus node_status;
 FirmwareUpdate fwupdate;
+uint32_t testInit = 0x12345678;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -80,6 +81,12 @@ int fputc(int ch, FILE *f)
   */
 int main(void)
 {
+
+  extern uint32_t _sidata, _sdata, _edata;
+
+  volatile uint32_t flashInitValue = *(uint32_t *)&_sidata;
+  volatile uint32_t ramDataValue   = *(uint32_t *)&_sdata;
+  volatile uint32_t dataSize       = (uint32_t)&_edata - (uint32_t)&_sdata;
 
   /* USER CODE BEGIN 1 */
 	nodeStatus.health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK;

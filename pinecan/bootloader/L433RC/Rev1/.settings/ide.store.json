@@ -1,4 +1,6 @@
 {
   "device": "STM32L433RCT3",
-  "toolchain": "GCC"
+  "toolchain": "GCC",
+  "core": "Cortex-M4",
+  "order": 0
 }

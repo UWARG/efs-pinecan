@@ -155,6 +155,19 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     FLASH_PAGE_SIZE=${FLASH_PAGE_SIZE}
 )
 
+# To get the specific linker vars needed to build.
+set(BOARD_DIR ${CMAKE_SOURCE_DIR}/../../board_specific/${PINECAN_BOARD})
+include(${BOARD_DIR}/memory.cmake)
+set(LINKER_SCRIPT_PATH
+    ${BOARD_DIR}/${LINKER_SCRIPT}
+)
+
+message(STATUS "LINKER_SCRIPT_PATH=${LINKER_SCRIPT_PATH}")
+
+target_link_options(${PROJECT_NAME} PRIVATE
+    -T${LINKER_SCRIPT_PATH}
+)
+
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
@@ -163,13 +176,13 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     # Add user defined libraries
 )
 
-configure_file(# Need to change since the linker is in the board specific not board agnostic section so this path is wrong.
-    ${BOOTLDR_DIR}/board_specific/${PINECAN_BOARD}/STM32L433XX_FLASH.ld.in
-    ${CMAKE_CURRENT_BINARY_DIR}/STM32L433XX_FLASH.ld
-    @ONLY
-)
+# configure_file(# Need to change since the linker is in the board specific not board agnostic section so this path is wrong.
+#     ${BOOTLDR_DIR}/board_specific/${PINECAN_BOARD}/STM32L433XX_FLASH.ld.in
+#     ${CMAKE_CURRENT_BINARY_DIR}/STM32L433XX_FLASH.ld
+#     @ONLY
+# )
 
 # 
-target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
-    -T${CMAKE_CURRENT_BINARY_DIR}/STM32L433XX_FLASH.ld
-)
+# target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
+#     -T${CMAKE_CURRENT_BINARY_DIR}/STM32L433XX_FLASH.ld
+# )

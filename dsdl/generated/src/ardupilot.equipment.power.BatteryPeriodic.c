@@ -9,14 +9,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t ardupilot_equipment_power_BatteryPeriodic_encode(struct ardupilot_equipment_power_BatteryPeriodic* msg, uint8_t* buffer
+uint32_t _ardupilot_equipment_power_BatteryPeriodic_encode(struct ardupilot_equipment_power_BatteryPeriodic* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, ARDUPILOT_EQUIPMENT_POWER_BATTERYPERIODIC_MAX_SIZE);
-    _ardupilot_equipment_power_BatteryPeriodic_encode(buffer, &bit_ofs, msg, 
+    __ardupilot_equipment_power_BatteryPeriodic_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -29,14 +29,14 @@ uint32_t ardupilot_equipment_power_BatteryPeriodic_encode(struct ardupilot_equip
 /*
   return true if the decode is invalid
  */
-bool ardupilot_equipment_power_BatteryPeriodic_decode(const CanardRxTransfer* transfer, struct ardupilot_equipment_power_BatteryPeriodic* msg) {
+bool _ardupilot_equipment_power_BatteryPeriodic_decode(const CanardRxTransfer* transfer, struct ardupilot_equipment_power_BatteryPeriodic* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > ARDUPILOT_EQUIPMENT_POWER_BATTERYPERIODIC_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_ardupilot_equipment_power_BatteryPeriodic_decode(transfer, &bit_ofs, msg,
+    if (__ardupilot_equipment_power_BatteryPeriodic_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else

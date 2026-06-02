@@ -45,18 +45,38 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_protocol_debug_KeyValue_encode(struct uavcan_protocol_debug_KeyValue* msg, uint8_t* buffer
+uint32_t _uavcan_protocol_debug_KeyValue_encode(struct uavcan_protocol_debug_KeyValue* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_protocol_debug_KeyValue_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_debug_KeyValue* msg);
+bool _uavcan_protocol_debug_KeyValue_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_debug_KeyValue* msg);
+
+static inline uint32_t uavcan_protocol_debug_KeyValue_encode(struct uavcan_protocol_debug_KeyValue* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_protocol_debug_KeyValue_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_protocol_debug_KeyValue_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_debug_KeyValue* msg) {
+
+    return _uavcan_protocol_debug_KeyValue_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
 
-static inline void _uavcan_protocol_debug_KeyValue_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_debug_KeyValue* msg, bool tao);
-static inline bool _uavcan_protocol_debug_KeyValue_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_debug_KeyValue* msg, bool tao);
-void _uavcan_protocol_debug_KeyValue_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_debug_KeyValue* msg, bool tao) {
+static inline void __uavcan_protocol_debug_KeyValue_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_debug_KeyValue* msg, bool tao);
+static inline bool __uavcan_protocol_debug_KeyValue_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_debug_KeyValue* msg, bool tao);
+void __uavcan_protocol_debug_KeyValue_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_debug_KeyValue* msg, bool tao) {
 
     (void)buffer;
     (void)bit_ofs;
@@ -112,7 +132,7 @@ void _uavcan_protocol_debug_KeyValue_encode(uint8_t* buffer, uint32_t* bit_ofs, 
 /*
  decode uavcan_protocol_debug_KeyValue, return true on failure, false on success
 */
-bool _uavcan_protocol_debug_KeyValue_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_debug_KeyValue* msg, bool tao) {
+bool __uavcan_protocol_debug_KeyValue_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_debug_KeyValue* msg, bool tao) {
 
     (void)transfer;
     (void)bit_ofs;

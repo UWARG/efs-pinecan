@@ -41,18 +41,38 @@ extern "C"
 {
 #endif
 
-uint32_t uavcan_tunnel_CallResponse_encode(struct uavcan_tunnel_CallResponse* msg, uint8_t* buffer
+uint32_t _uavcan_tunnel_CallResponse_encode(struct uavcan_tunnel_CallResponse* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 );
-bool uavcan_tunnel_CallResponse_decode(const CanardRxTransfer* transfer, struct uavcan_tunnel_CallResponse* msg);
+bool _uavcan_tunnel_CallResponse_decode(const CanardRxTransfer* transfer, struct uavcan_tunnel_CallResponse* msg);
+
+static inline uint32_t uavcan_tunnel_CallResponse_encode(struct uavcan_tunnel_CallResponse* msg, uint8_t* buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , bool tao
+#endif
+) {
+
+    return _uavcan_tunnel_CallResponse_encode(msg, buffer
+#if CANARD_ENABLE_TAO_OPTION
+    , tao
+#endif
+    );
+
+}
+
+static inline bool uavcan_tunnel_CallResponse_decode(const CanardRxTransfer* transfer, struct uavcan_tunnel_CallResponse* msg) {
+
+    return _uavcan_tunnel_CallResponse_decode(transfer, msg);
+
+}
 
 #if defined(CANARD_DSDLC_INTERNAL)
 
-static inline void _uavcan_tunnel_CallResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_tunnel_CallResponse* msg, bool tao);
-static inline bool _uavcan_tunnel_CallResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_tunnel_CallResponse* msg, bool tao);
-void _uavcan_tunnel_CallResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_tunnel_CallResponse* msg, bool tao) {
+static inline void __uavcan_tunnel_CallResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_tunnel_CallResponse* msg, bool tao);
+static inline bool __uavcan_tunnel_CallResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_tunnel_CallResponse* msg, bool tao);
+void __uavcan_tunnel_CallResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_tunnel_CallResponse* msg, bool tao) {
 
     (void)buffer;
     (void)bit_ofs;
@@ -99,7 +119,7 @@ void _uavcan_tunnel_CallResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, stru
 /*
  decode uavcan_tunnel_CallResponse, return true on failure, false on success
 */
-bool _uavcan_tunnel_CallResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_tunnel_CallResponse* msg, bool tao) {
+bool __uavcan_tunnel_CallResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_tunnel_CallResponse* msg, bool tao) {
 
     (void)transfer;
     (void)bit_ofs;

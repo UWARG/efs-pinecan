@@ -9,14 +9,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t warg_SetControlState_encode(struct warg_SetControlState* msg, uint8_t* buffer
+uint32_t _warg_SetControlState_encode(struct warg_SetControlState* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, WARG_SETCONTROLSTATE_MAX_SIZE);
-    _warg_SetControlState_encode(buffer, &bit_ofs, msg, 
+    __warg_SetControlState_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -29,14 +29,14 @@ uint32_t warg_SetControlState_encode(struct warg_SetControlState* msg, uint8_t* 
 /*
   return true if the decode is invalid
  */
-bool warg_SetControlState_decode(const CanardRxTransfer* transfer, struct warg_SetControlState* msg) {
+bool _warg_SetControlState_decode(const CanardRxTransfer* transfer, struct warg_SetControlState* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > WARG_SETCONTROLSTATE_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_warg_SetControlState_decode(transfer, &bit_ofs, msg,
+    if (__warg_SetControlState_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else

@@ -9,14 +9,14 @@
 #include <test_helpers.h>
 #endif
 
-uint32_t com_hex_equipment_flow_Measurement_encode(struct com_hex_equipment_flow_Measurement* msg, uint8_t* buffer
+uint32_t _com_hex_equipment_flow_Measurement_encode(struct com_hex_equipment_flow_Measurement* msg, uint8_t* buffer
 #if CANARD_ENABLE_TAO_OPTION
     , bool tao
 #endif
 ) {
     uint32_t bit_ofs = 0;
     memset(buffer, 0, COM_HEX_EQUIPMENT_FLOW_MEASUREMENT_MAX_SIZE);
-    _com_hex_equipment_flow_Measurement_encode(buffer, &bit_ofs, msg, 
+    __com_hex_equipment_flow_Measurement_encode(buffer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     tao
 #else
@@ -29,14 +29,14 @@ uint32_t com_hex_equipment_flow_Measurement_encode(struct com_hex_equipment_flow
 /*
   return true if the decode is invalid
  */
-bool com_hex_equipment_flow_Measurement_decode(const CanardRxTransfer* transfer, struct com_hex_equipment_flow_Measurement* msg) {
+bool _com_hex_equipment_flow_Measurement_decode(const CanardRxTransfer* transfer, struct com_hex_equipment_flow_Measurement* msg) {
 #if CANARD_ENABLE_TAO_OPTION
     if (transfer->tao && (transfer->payload_len > COM_HEX_EQUIPMENT_FLOW_MEASUREMENT_MAX_SIZE)) {
         return true; /* invalid payload length */
     }
 #endif
     uint32_t bit_ofs = 0;
-    if (_com_hex_equipment_flow_Measurement_decode(transfer, &bit_ofs, msg,
+    if (__com_hex_equipment_flow_Measurement_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else
