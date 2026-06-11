@@ -37,3 +37,40 @@ all pinecan board specific interfaces that are to be used by pinecan common but 
 
 
 What i'm currently thinking is the board .h is only included by pinecan.c and not pinecan.h. The user only has access to pinecan.h functions in common, and pincan.h routes to relevant board specific when necessary
+
+TAO support
+Better/correct handling of transfer id
+
+Rename pinecan.h to pinecanCommon.h and have pinecan.h include everything, thus preventing circular includes while still having pinecan.h be the only thing that needs to be included by the target
+
+guidance on how to set canardmempool size
+setup for enabling/disabling debug macro on debug, and guidance on how to use debug vs release builds
+
+basic convention for branches such as:
+{target/pinecan}/{fix/feature/etc}/{description-of-branch}
+
+long term:
+- rtos support (probably only when needed)
+- cpp support (similar to how libcanard did it likely with some extern Cs in there and stuff)
+
+
+System setup guide:
+Install vscode
+If you've used vscode before and have other extensions, there might be conflicts. Create a new profile -> name it stm32 or whatever youd like
+
+Either open vscode at the project level or File->Add folder to workspace the project level folder
+IMPORTANT: if you choose to add folder to workspace, you must open a file inside the project level folder for any of the below commands or when youre trying to build in general, or else it wont know which project's build configs to follow
+ctrl+shift+p STM32Cube Rebuild remote bundle list cache
+STM32Cube Install prerequisite bundles
+CMake Configure, root level cmakelists.txt for your project
+CMake Select configure preset -> likely Debug
+CMake Build target (or gear icon on bottom left)
+For debug go to RUN AND DEBUG and click Run and Debug, select device from STM32CUBE devices and boards dropdown
+Can create launch.json file for convinience
+
+If any issues:
+STM32Cube Rebuild remote bundle list cache
+STM32Cube Install prerequisite bundles
+CMake Delete Cache and Reconfigure
+CMake Clean
+

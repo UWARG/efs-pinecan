@@ -2,42 +2,41 @@
 PATHS := dronecan-dsdl/uavcan \
          dronecan-dsdl/dronecan \
          dronecan-dsdl/com \
-		 dronecan-dsdl/ardupilot \
-		 custom/warg
+         dronecan-dsdl/ardupilot \
+         custom/warg
 
-# System Python used to *create* the venv (can be overridden: make SYS_PYTHON=python3)
-SYS_PYTHON ?= python3
+# System Python used to create the venv
+SYS_PYTHON ?= $(shell \
+	if command -v python3 >/dev/null 2>&1; then echo python3; \
+	elif command -v python >/dev/null 2>&1; then echo python; \
+	elif command -v py >/dev/null 2>&1; then echo py -3; \
+	else echo python; fi)
 
-VENV_PYTHON := .venv/bin/python
-VENV_PIP    := .venv/bin/pip
-
-ROOT := $(CURDIR)
 VENV_DIR := .venv
 DEPS_STAMP := $(VENV_DIR)/.deps
-SCRIPT := $(ROOT)/dronecan-dsdlc/dronecan_dsdlc.py -O generated $(PATHS)
+
+SCRIPT := dronecan-dsdlc/dronecan_dsdlc.py -O generated $(PATHS)
+
 REQUIREMENTS := dronecan
+REQUIREMENTS_FILE := dronecan-dsdlc/requirements.txt
+
+# Find Python inside the venv when this variable is used
+VENV_PYTHON = $(shell $(SYS_PYTHON) -c "from pathlib import Path; v=Path('$(VENV_DIR)'); candidates=[v/'Scripts'/'python.exe', v/'bin'/'python', v/'bin'/'python.exe']; print(next((str(p) for p in candidates if p.exists()), ''))")
 
 all: setup build
 
-# Default: set up env if needed, then run the script
-build: 
-	@echo "Generating headers from DSDL"
-	$(VENV_PYTHON) $(SCRIPT)
-
-# Only create / update the environment if necessary
 setup: $(DEPS_STAMP)
 
-# Create the venv if it doesn't exist
+build: setup
+	@echo Generating headers from DSDL
+	"$(VENV_PYTHON)" $(SCRIPT)
+
 $(VENV_DIR):
 	$(SYS_PYTHON) -m venv $(VENV_DIR)
 
-# Install requirements if they changed (or if this is first time)
-$(DEPS_STAMP): | $(VENV_DIR)
-	$(VENV_PIP) install $(REQUIREMENTS)
-	$(VENV_PYTHON) -c "from pathlib import Path; Path('$(DEPS_STAMP)').touch()"
+$(DEPS_STAMP): $(REQUIREMENTS_FILE) | $(VENV_DIR)
+	"$(VENV_PYTHON)" -m pip install -r $(REQUIREMENTS_FILE) $(REQUIREMENTS)
+	$(SYS_PYTHON) -c "from pathlib import Path; Path(r'$(DEPS_STAMP)').touch()"
 
-# Optional: remove venv completely
 clean:
-	@echo "Removing virtual environment..."
-	@if [ -d "$(VENV_DIR)" ]; then rm -rf "$(VENV_DIR)"; fi
-	rm -rf generated
+	$(SYS_PYTHON) -c "from pathlib import Path; import shutil; [shutil.rmtree(p, ignore_errors=True) for p in ['$(VENV_DIR)', 'generated']]"

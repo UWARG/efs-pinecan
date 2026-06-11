@@ -1,0 +1,1 @@
+This is a complete example project for PineCAN with working Tx/Rx.

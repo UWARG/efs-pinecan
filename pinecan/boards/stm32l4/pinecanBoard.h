@@ -2,12 +2,11 @@
 
 #include "stm32l4xx_hal.h"
 #include "canard.h"
+#include "pinecan.h"
 
 typedef struct {
     CAN_HandleTypeDef *hcan;
     CanardInstance *canard;
-    void* canardMemPool;
-    size_t canardMemPoolSize;
     struct uavcan_protocol_NodeStatus *nodeStatus;
 } PinecanInit;
 
@@ -16,4 +15,4 @@ typedef struct {
  * @param  initParams pointer to PinecanInit structure with initialization parameters.
  * @retval None
  */
-void pinecanInit(PinecanInit *initParams);
+PineCAN_Status pinecanInit(PinecanInit *initParams);

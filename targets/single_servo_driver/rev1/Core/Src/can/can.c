@@ -1,4 +1,5 @@
 #include <string.h>
+#include <math.h>
 #include "canard.h"
 #include "dronecan_msgs.h"
 #include "servo.h"
@@ -10,11 +11,35 @@ extern CAN_HandleTypeDef hcan1;
 struct uavcan_protocol_NodeStatus nodeStatus;
 
 static CanardInstance canard;
-static uint8_t canardMemPool[1024];
 
 // === tx dronecan ===
 // uavcan.equipment.actuator.status
-// TODO: QOL feature
+void sendActuatorStatus(Servo_t *servo)
+{
+  // This is kind of garbage data right now, but including for proof of concept of tx
+  struct uavcan_equipment_actuator_Status status = {0};
+  status.actuator_id = servo->actuatorID;
+  status.position = NAN; // Unknown fields should be set to NAN.
+  status.force = NAN;
+  status.speed = NAN;
+  status.power_rating_pct = UAVCAN_EQUIPMENT_ACTUATOR_STATUS_POWER_RATING_PCT_UNKNOWN;
+
+  uint8_t txBuffer[UAVCAN_EQUIPMENT_ACTUATOR_STATUS_MAX_SIZE] = {0};
+  const uint32_t dataLength = uavcan_equipment_actuator_Status_encode(&status, txBuffer);
+
+  static uint8_t transferID = 0;
+  CanardTxTransfer txFrame = {
+      CanardTransferTypeBroadcast,
+      UAVCAN_EQUIPMENT_ACTUATOR_STATUS_SIGNATURE,
+      UAVCAN_EQUIPMENT_ACTUATOR_STATUS_ID,
+      &transferID,
+      CANARD_TRANSFER_PRIORITY_LOW,
+      txBuffer,
+      dataLength
+  };
+  
+  canardBroadcastObj(&canard, &txFrame);
+}
 
 // uavcan.equipment.power.CircuitStatus
 // TODO: QOL feature
@@ -52,8 +77,6 @@ void initCAN(void)
   PinecanInit initParams = {
     .hcan = &hcan1,
     .canard = &canard,
-    .canardMemPool = canardMemPool,
-    .canardMemPoolSize = sizeof(canardMemPool),
     .nodeStatus = &nodeStatus
   };
   pinecanInit(&initParams);

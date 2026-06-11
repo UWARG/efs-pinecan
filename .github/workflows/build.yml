@@ -1,0 +1,75 @@
+name: Build All Targets
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # First job: read BuildConfigs.json and output a matrix
+  enumerate:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - id: set-matrix
+        run: |
+          # Extract keys and target_locations into a JSON array
+          MATRIX=$(jq -c '[to_entries[] | {config_key: .key, target: .value.target_location}]' BuildConfigs.json)
+          echo "matrix=${MATRIX}" >> "$GITHUB_OUTPUT"
+
+  # Second job: build each config in parallel
+  build:
+    needs: enumerate
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.enumerate.outputs.matrix) }}
+        build_type: [Debug, Release]
+
+    name: "Build ${{ matrix.config_key }} (${{ matrix.build_type }})"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install ARM toolchain and Ninja
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build
+          # Download ARM GNU toolchain
+          wget -q https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
+          tar xf arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
+          echo "${{ github.workspace }}/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin" >> "$GITHUB_PATH"
+
+      - name: Verify toolchain
+        run: arm-none-eabi-gcc --version
+
+      - name: Configure CMake
+        run: |
+          cmake -B build/${{ matrix.config_key }}-${{ matrix.build_type }} \
+            -S ${{ github.workspace }}/${{ matrix.target }} \
+            -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/${{ matrix.target }}/cmake/gcc-arm-none-eabi.cmake \
+            -DPINECAN_CONFIG_KEY=${{ matrix.config_key }} \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+
+      - name: Build
+        run: cmake --build build/${{ matrix.config_key }}-${{ matrix.build_type }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.config_key }}-${{ matrix.build_type }}
+          path: |
+            path: |
+            build/${{ matrix.config_key }}-${{ matrix.build_type }}/**/*.elf
+            build/${{ matrix.config_key }}-${{ matrix.build_type }}/**/*.bin
+            build/${{ matrix.config_key }}-${{ matrix.build_type }}/**/*.hex

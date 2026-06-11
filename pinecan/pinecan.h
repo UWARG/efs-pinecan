@@ -1,15 +1,21 @@
 #pragma once
 
-#include "canard.h"
+#include "pinecanCommon.h"
 #include "pinecanBoard.h"
-#include <stdint.h>
 
-#ifndef UNUSED
-#define UNUSED(x) (void)(x)
+#ifndef PINECAN_DEBUG
+# define PINECAN_DEBUG 0
 #endif
 
-/**
- * @brief  Process PineCAN tasks every 1 ms
- * @retval None
- */
-void pinecan1ms(void);
+#ifndef PINECAN_ASSERT
+# if PINECAN_DEBUG
+#  include <assert.h>
+#  define PINECAN_ASSERT(x) assert(x)
+# else
+#  define PINECAN_ASSERT(x) (void)(x)
+# endif
+#endif
+
+#ifndef PINECAN_UNUSED
+# define PINECAN_UNUSED(x) (void)(x)
+#endif

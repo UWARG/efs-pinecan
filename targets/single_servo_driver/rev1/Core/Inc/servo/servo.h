@@ -37,3 +37,9 @@ void dutyCycleActuation(float dutyCycle, uint8_t actuatorID);
   * @retval None
   */
 void percentageActuation(float percentage, uint8_t actuatorID);
+
+/**
+  * @brief  Send status for all servos.
+  * @retval None
+  */
+void sendActuatorStatuses(void);

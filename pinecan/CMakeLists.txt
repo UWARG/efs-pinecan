@@ -9,11 +9,12 @@ endif()
 
 target_include_directories(pinecan INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/common
     ${CMAKE_CURRENT_LIST_DIR}/boards/${PINECAN_BOARD}
 )
 
 target_sources(pinecan INTERFACE
-    ${CMAKE_CURRENT_LIST_DIR}/pinecan.c
+    ${CMAKE_CURRENT_LIST_DIR}/common/pinecanCommon.c
     ${CMAKE_CURRENT_LIST_DIR}/boards/${PINECAN_BOARD}/pinecanBoard.c
 )
 
@@ -21,15 +22,11 @@ target_sources(pinecan INTERFACE
 add_library(libcanard STATIC)
 
 target_sources(libcanard PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}/libcanard/Src/canard.c
+    ${CMAKE_CURRENT_LIST_DIR}/libcanard/canard.c
 )
 
 target_include_directories(libcanard PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}/libcanard/Inc
-)
-
-target_include_directories(libcanard PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}/libcanard/Src
+    ${CMAKE_CURRENT_LIST_DIR}/libcanard
 )
 
 # Add dsdl generated sources
@@ -37,6 +34,12 @@ add_subdirectory(../dsdl ${CMAKE_BINARY_DIR}/dsdl) # TODO: set up clever regener
 
 # Consumers of pinecan automatically get libcanard linked in
 target_link_libraries(pinecan INTERFACE libcanard dsdl)
+
+# Set PINECAN_DEBUG for debug builds
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(pinecan INTERFACE PINECAN_DEBUG=1)
+    message("PINECAN_DEBUG enabled for Debug build")
+endif()
 
 # Validate that pinecan code is compatible with C standard
 if(CMAKE_C_STANDARD LESS 11)

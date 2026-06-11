@@ -4,3 +4,6 @@
 [submodule "dsdl/dronecan-dsdlc"]
 	path = dsdl/dronecan-dsdlc
 	url = https://github.com/dronecan/dronecan_dsdlc.git
+[submodule "pinecan/libcanard"]
+	path = pinecan/libcanard
+	url = https://github.com/dronecan/libcanard.git
