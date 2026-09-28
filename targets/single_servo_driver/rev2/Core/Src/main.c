@@ -308,17 +308,26 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
-  __HAL_RCC_GPIOH_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(DIAG_EN_GPIO_Port, DIAG_EN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(TJA1051_SILENT_GPIO_Port, TJA1051_SILENT_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : DIAG_EN_Pin */
-  GPIO_InitStruct.Pin = DIAG_EN_Pin;
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(NEOPIXEL_GPIO_Port, NEOPIXEL_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : TJA1051_SILENT_Pin */
+  GPIO_InitStruct.Pin = TJA1051_SILENT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(TJA1051_SILENT_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : NEOPIXEL_Pin */
+  GPIO_InitStruct.Pin = NEOPIXEL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  HAL_GPIO_Init(DIAG_EN_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(NEOPIXEL_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
   /* USER CODE END MX_GPIO_Init_2 */

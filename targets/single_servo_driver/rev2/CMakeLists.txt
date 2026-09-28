@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 3.22)
 # ======== Pre-build setup ========
 # Default config to use from BuildConfigs.json. This can be overridden from command line.
 # IMPORATANT: If you modify this value (or any CACHE value), you must do a clean re-configure of CMake
-set(PINECAN_CONFIG_KEY "SSD_rev1"
+set(PINECAN_CONFIG_KEY "SSD_rev2"
     CACHE STRING "Key in BuildConfigs.json to use")
 
 # Repo root path. Adjust path to match your layout.

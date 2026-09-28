@@ -59,10 +59,12 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define TJA1051_SILENT_Pin GPIO_PIN_6
+#define TJA1051_SILENT_GPIO_Port GPIOA
 #define SERVO_PWM_Pin GPIO_PIN_7
 #define SERVO_PWM_GPIO_Port GPIOA
-#define DIAG_EN_Pin GPIO_PIN_3
-#define DIAG_EN_GPIO_Port GPIOH
+#define NEOPIXEL_Pin GPIO_PIN_0
+#define NEOPIXEL_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
