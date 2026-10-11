@@ -1,0 +1,7 @@
+../Core/Src/BQ76925.c:32:13:read_byte	1
+../Core/Src/BQ76925.c:38:12:write_byte	2
+../Core/Src/BQ76925.c:49:6:get_cal_vals	7
+../Core/Src/BQ76925.c:95:5:init_BQ76925	3
+../Core/Src/BQ76925.c:130:5:vcout	2
+../Core/Src/BQ76925.c:139:6:balance_cell	2
+../Core/Src/BQ76925.c:150:6:stop_balance	1
