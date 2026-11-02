@@ -1,7 +1,7 @@
 -- led_pineCAN_testing.lua
 --
 -- TESTING variant of led_pineCAN.lua. Instead of reading real ArduPilot
--- flight data, it cycles through every flight-phase state once per second and
+-- flight data, it cycles through every flight-phase state once per "PERIOD_MS" and
 -- broadcasts the corresponding `ardupilot.indication.NotifyState` DroneCAN
 -- message (data type id 20007). The wire output is identical to
 -- led_pineCAN.lua -- the ONLY difference is where the state comes from and the
@@ -16,7 +16,7 @@
 local NOTIFYSTATE_ID   = 20007      -- ardupilot.indication.NotifyState data type id
 local PRIORITY         = 16         -- DroneCAN priority (0 highest, 31 lowest)
 local SOURCE_NODE_ID   = 11         -- this Lua sender's node id (distinct from board NODE_ID 71)
-local PERIOD_MS        = 5000       -- step to the next state every 1 second
+local PERIOD_MS        = 5000       -- step to the next state every x seconds
 local WRITE_TIMEOUT_US = 10000      -- per-frame write timeout in microseconds
 local CAN_DEVICE_INDEX = 5          -- CAN scripting driver buffer index
 

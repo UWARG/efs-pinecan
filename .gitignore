@@ -13,7 +13,8 @@
 .project
 
 # AI/design notes and documentation are not firmware inputs
-/.kiro/
+.kiro/
+/CAN_LED_INTERVIEW_GUIDE.md
 *.md
 !README.md
 !LICENSE.md

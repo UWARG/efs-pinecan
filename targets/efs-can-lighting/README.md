@@ -49,6 +49,23 @@ first build:
 git submodule update --init --recursive
 ```
 
+### Shared DSDL files
+
+Lighting uses the repository's `dsdl/generated/include` and
+`dsdl/generated/src` through the `pinecan` CMake target. Its
+`PINECAN_DSDL_SOURCES` list selects `ardupilot.indication.NotifyState.c`,
+`uavcan.protocol.GetNodeInfo_res.c`, and `uavcan.protocol.NodeStatus.c`.
+Supporting message headers also come from the shared directory.
+
+Local generated files with shared equivalents have been removed.
+`Core/dsdlc_generated` temporarily retains only four files that have no shared
+equivalent: `include/cuav.equipment.power.CBAT.h`,
+`src/cuav.equipment.power.CBAT.c`, `include/fred.MyPacket.h`, and
+`include/fred.SetControlState.h`. These are backups pending hardware testing;
+they are not build inputs or include paths. Remove them once testing confirms
+they are unnecessary. Any future required message should live in the shared
+DSDL directory rather than adding a lighting-specific copy.
+
 The available configure and build presets are:
 
 | Board | Debug | Release |

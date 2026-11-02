@@ -148,7 +148,9 @@ if(NOT EXISTS "${LIBCANARD_CHECK}")
         "Run: git submodule update --init --recursive")
 endif()
 
-# Add pinecan sources
+# Build lighting's message codecs from the shared root dsdl/generated directory
+# through PineCAN. Core/dsdlc_generated contains backups only; do not add it to
+# the source list or include paths.
 set(PINECAN_DSDL_SOURCES
     ardupilot.indication.NotifyState.c
     uavcan.protocol.GetNodeInfo_res.c
