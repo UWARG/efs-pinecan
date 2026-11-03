@@ -1,7 +1,9 @@
 # Local environments and editor metadata
 .venv/
 .idea/
-/.vscode/
+/.vscode/*
+!/.vscode/settings.json
+!/.vscode/tasks.json
 .metadata/
 .settings/
 .cache/
@@ -35,9 +37,9 @@ __pycache__/
 
 # This repository only accepts new firmware under the lighting target
 targets/*
-!targets/efs-can-lighting/
+!targets/can-led/
 
 # Stray files/directories from the standalone lighting checkout
-targets/efs-can-lighting/git
-targets/efs-can-lighting/.gitmodules
-targets/efs-can-lighting/pinecan_linked_folders/
+targets/can-led/git
+targets/can-led/.gitmodules
+targets/can-led/pinecan_linked_folders/

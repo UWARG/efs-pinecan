@@ -15,7 +15,7 @@
         }
     },
     "LIGHTING_rev4": {
-        "target_location": "targets/efs-can-lighting",
+        "target_location": "targets/can-led",
         "board": "stm32l4",
         "symbols": {
             "NODE_NAME": "LIGHT1",
@@ -30,7 +30,7 @@
         }
     },
     "LIGHTING_rev5": {
-        "target_location": "targets/efs-can-lighting",
+        "target_location": "targets/can-led",
         "board": "stm32l4",
         "symbols": {
             "NODE_NAME": "LIGHT1",

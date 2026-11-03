@@ -3,16 +3,9 @@ cmake_minimum_required(VERSION 3.22)
 # dsdl as a static lib
 add_library(dsdl STATIC)
 
-if(PINECAN_DSDL_SOURCES)
-    set(DSDL_SOURCES "")
-    foreach(DSDL_SOURCE IN LISTS PINECAN_DSDL_SOURCES)
-        list(APPEND DSDL_SOURCES "${CMAKE_CURRENT_LIST_DIR}/generated/src/${DSDL_SOURCE}")
-    endforeach()
-else()
-    file(GLOB DSDL_SOURCES CONFIGURE_DEPENDS
-        ${CMAKE_CURRENT_LIST_DIR}/generated/src/*.c
-    )
-endif()
+file(GLOB DSDL_SOURCES CONFIGURE_DEPENDS
+    ${CMAKE_CURRENT_LIST_DIR}/generated/src/*.c
+)
 
 target_sources(dsdl PRIVATE
     ${DSDL_SOURCES}
