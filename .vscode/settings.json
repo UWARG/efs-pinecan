@@ -1,0 +1,7 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder}/targets/can-led",
+    "cmake.useCMakePresets": "always",
+    "cmake.preferredGenerators": [
+        "Ninja"
+    ]
+}

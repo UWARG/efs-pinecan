@@ -25,7 +25,7 @@ static rxQueueData rxQueue = {0};
 
 static PinecanData data;
 
-static uint8_t canardMemPool[CANARD_MEM_POOL_SIZE];
+static uint8_t canardMemPool[CANARD_MEM_POOL_SIZE] __attribute__((aligned(__BIGGEST_ALIGNMENT__)));
 
 /* ============ PRIVATE FUNCTION DECLARATIONS ============ */
 

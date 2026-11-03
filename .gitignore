@@ -1,4 +1,45 @@
-.venv
-.vscode
-.metadata
+# Local environments and editor metadata
+.venv/
+.idea/
+/.vscode/*
+!/.vscode/settings.json
+!/.vscode/tasks.json
+.metadata/
+.settings/
+.cache/
+.clangd
+*.iml
+*.launch
+.cproject
+.mxproject
+.project
+
+# AI/design notes and documentation are not firmware inputs
+.kiro/
+/CAN_LED_INTERVIEW_GUIDE.md
+*.md
+!README.md
+!LICENSE.md
+!License.md
+*.pdf
+
+# Generated build and tooling artifacts
 build/
+build-*/
+cmake-build-*/
+Debug/
+Release/
+REV* Debug/
+REV* Release/
+compile_commands.json
+__pycache__/
+*.py[cod]
+
+# This repository only accepts new firmware under the lighting target
+targets/*
+!targets/can-led/
+
+# Stray files/directories from the standalone lighting checkout
+targets/can-led/git
+targets/can-led/.gitmodules
+targets/can-led/pinecan_linked_folders/
